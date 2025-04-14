@@ -162,7 +162,9 @@ width: 40px;
         <a class="nav-link" href="#"><i class="bi bi-box"></i> <span>Dashboard</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#"><i class="bi-box-seam"></i> <span>Product</span></a>
+        <a class="nav-link" href="{{ route('inventory.product') }}">
+            <i class="bi-box-seam"></i> <span>Product</span>
+        </a>
       </li>
       <li class="nav-item">
         <a class="nav-link active" href="#"><i class="bi-person-gear"></i> <span>Account Management</span></a>

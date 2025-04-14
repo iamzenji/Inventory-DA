@@ -2,7 +2,7 @@
 @section('content')
 <x-header.header/>
 <div class="container">
-    
+
     <div class="row">
             <x-input
                 label="First Name"

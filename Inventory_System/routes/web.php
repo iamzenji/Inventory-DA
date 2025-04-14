@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('inventory.inventory');
 });
+
+// route to product page
+Route::get('/inventory/product', function () {
+    return view('inventory.product');
+})->name('inventory.product');
 
 Auth::routes();
 
