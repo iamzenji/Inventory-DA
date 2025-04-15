@@ -3,7 +3,7 @@
 @section('title', 'Product List')
 
 @section('content')
-<x-header.header/>
+<x-sidebar.sidebar/>
 <div class="container mt-4">
     <h2 class="mb-4">Product List</h2>
 
@@ -25,19 +25,82 @@
 
 <!-- Add Product Modal -->
 <x-modal.modal id="addProductModal" title="Add Product">
+
     <form>
         @csrf
-        <div class="mb-3">
-            <label class="form-label">Product Name</label>
-            <input type="text" class="form-control" name="product_name">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Serial Number</label>
-            <input type="text" class="form-control" name="serial_number">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Price</label>
-            <input type="text" class="form-control" name="price">
+        <div class="row">
+            <div class="col-sm-6">
+                <x-forms.form
+                    label="Product Name"
+                    type="number"
+                    placeholder="Product Name"
+                    col="col-sm-12"
+                />
+            </div>
+            <div class="col-sm-6">
+                <x-forms.form
+                    label="Product Number"
+                    type="number"
+                    placeholder="Product Number"
+                    col="col-sm-12"
+                />
+            </div>
+            <div class="col-sm-6">
+                <x-forms.form
+                    label="Serial Number"
+                    type="text"
+                    placeholder="Serial Name"
+                    col="col-sm-12"
+                />
+            </div>
+            <div class="col-sm-6">
+                <x-forms.form
+                    label="Brand"
+                    type="text"
+                    placeholder="Brand"
+                    col="col-sm-12"
+                />
+            </div>
+            <div class="col-sm-6">
+                <x-forms.form
+                    label="Date Acquired"
+                    type="date"
+                    placeholder="Date Acquired"
+                    col="col-sm-12"
+                />
+            </div>
+            <div class="col-sm-6">
+                <x-forms.form
+                    label="Price"
+                    type="text"
+                    placeholder="Price"
+                    col="col-sm-12"
+                />
+            </div>
+            <div class="col-sm-4">
+                <x-forms.form
+                    label="Office Location"
+                    type="text"
+                    placeholder="Office Location"
+                    col="col-sm-12"
+                />
+            </div>
+            <div class="col-sm-4">
+                <x-forms.form
+                    label="Issue To"
+                    type="text"
+                    placeholder="Issue To"
+                    col="col-sm-12"
+                />
+            </div>
+            <div class="col-sm-4">
+                <x-forms.form
+                    label="End User"
+                    type="text"
+                    placeholder="End User"
+                    col="col-sm-12"
+                />
+            </div>
         </div>
         <!-- Add more fields here -->
 
