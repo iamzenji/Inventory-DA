@@ -23,6 +23,10 @@ Route::get('/inventory/product', function () {
     return view('inventory.product');
 })->name('inventory.product');
 
+Route::get('/inventory/dashboard', function () {
+    return view('inventory.dashboard');
+})->name('inventory.dashboard');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

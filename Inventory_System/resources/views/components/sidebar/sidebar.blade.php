@@ -4,7 +4,9 @@
     <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
     <ul class="nav flex-column">
       <li class="nav-item">
-        <a class="nav-link" href="#"><i class="bi bi-box"></i> <span>Dashboard</span></a>
+        <a class="nav-link" href="{{ route('inventory.dashboard') }}">
+          <i class="bi bi-box"></i> <span>Dashboard</span>
+        </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ route('inventory.product') }}">
@@ -22,6 +24,9 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#"><i class="bi-gear"></i> <span>Settings</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="#"></i> <span>Log out</span></a>
       </li>
     </ul>
   </div>

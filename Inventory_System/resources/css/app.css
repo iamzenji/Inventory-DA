@@ -64,6 +64,7 @@ color: white;
 .search-box input::placeholder {
 color: #aaa;
 }
+
 @media (min-width: 768px) {
 body {
 margin-left: 250px;
@@ -91,4 +92,18 @@ body {
 margin-left: 0 !important;
 }
 }
-
+/* for dashboard */
+.small-box>.small-box-footer {
+    background-color: rgba(0, 0, 0, .1);
+    color: rgba(255, 255, 255, .8);
+    display: block;
+    padding: 3px 0;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    z-index: 10;
+}
+.small-box>.inner {
+    padding: 10px;
+    color: white;
+}

@@ -13,7 +13,7 @@
     </button>
 
     <!-- Product Table -->
-    <x-table.table 
+    <x-table.table
         id="productTable"
         :headers="['Product Type', 'Product Number', 'Serial Number', 'Brand', 'Date Acquired', 'Price', 'Office Location', 'Issued To', 'End User']"
         :rows="[
