@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +29,17 @@ Route::get('/inventory/dashboard', function () {
     return view('inventory.dashboard');
 })->name('inventory.dashboard');
 
+Route::get('/inventory/account', function () {
+    return view('inventory.account');
+})->name('inventory.account');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::group(['middleware' => ['auth', 'role:admin']], function(){
+    Route::get('/admin',[AdminController::class,'index'])->name('admin');
+});
+Route::group(['middleware' => ['auth', 'role:admin|user']], function(){
+    Route::get('/user',[UserController::class,'index'])->name('user');
+});

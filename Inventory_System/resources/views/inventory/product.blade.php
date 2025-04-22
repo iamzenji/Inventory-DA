@@ -8,9 +8,9 @@
     <h2 class="mb-4">Product List</h2>
 
     <!-- Add Product Button -->
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
+    {{-- <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
         <i class="bi bi-plus-lg"></i> Add Product
-    </button>
+    </button> --}}
 
     <!-- Product Table -->
     <x-table.table

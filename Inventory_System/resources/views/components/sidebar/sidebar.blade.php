@@ -14,7 +14,9 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link active" href="#"><i class="bi-person-gear"></i> <span>Account Management</span></a>
+        <a class="nav-link active" href="{{ route('inventory.account') }}">
+          <i class="bi-person-gear"></i> <span>Account Management</span>
+        </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#"><i class="bi-boxes"></i> <span>Supplies</span></a>

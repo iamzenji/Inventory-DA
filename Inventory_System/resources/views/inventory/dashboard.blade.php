@@ -1,6 +1,4 @@
 @extends('layouts.app')
-
-
 @section('content')
 <x-sidebar.sidebar/>
 <div class="container-fluid">

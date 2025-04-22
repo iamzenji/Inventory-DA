@@ -1,3 +1,4 @@
+{{-- <x-modal.modal id="addProductModal" title="Add Product"> --}}
 <div class="table-responsive">
     <table id="{{ $id ?? 'datatable' }}" class="table table-bordered table-striped w-100">
         <thead>
@@ -47,6 +48,7 @@
 
 @push('scripts')
 <script>
+    
     $(document).ready(function () {
         let domSetup = "<'row'<'col-sm-12 col-md-8'B><'col-sm-12 col-md-4'f>>" +
                     "<'row'<'col-sm-12'tr>>" +
@@ -58,7 +60,8 @@
                 text     : '<i class="bi bi-plus-lg"></i> Add',
                 className: 'btn btn-success',
                 action   : function () {
-                    alert("Trigger your add modal or action here.");
+                    let modal = new bootstrap.Modal(document.getElementById('addProductModal'));
+                    modal.show();
                 }
             },
             {
