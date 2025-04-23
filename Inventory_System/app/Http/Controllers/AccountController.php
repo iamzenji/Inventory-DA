@@ -2,27 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
-use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class AccountController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $users = User::get();
-        $roles =  Role::get();
-        return view('inventory.account',['users'=>  $users,'roles'=>$roles ]);
+        //
     }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view('admin.create');
+        //
     }
 
     /**
@@ -30,13 +27,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:admin_table,email',
-        ]);
-        User::create($validated);
-
-        return redirect()->route('inventory.account')->with('success', 'Post created successfully!');
+        //
     }
 
     /**

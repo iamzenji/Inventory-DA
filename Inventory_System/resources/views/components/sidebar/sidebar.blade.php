@@ -19,7 +19,9 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#"><i class="bi-boxes"></i> <span>Supplies</span></a>
+        <a class="nav-link active" href="{{ route('inventory.supplier') }}">
+          <i class="bi-boxes"></i> <span>Supplies</span>
+        </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#"><i class="bi-tags"></i> <span>Organization $ Label</span></a>

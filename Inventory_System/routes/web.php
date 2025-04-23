@@ -29,9 +29,14 @@ Route::get('/inventory/dashboard', function () {
     return view('inventory.dashboard');
 })->name('inventory.dashboard');
 
-Route::get('/inventory/account', function () {
-    return view('inventory.account');
-})->name('inventory.account');
+Route::get('/inventory/account',[UserController::class,'index' ])->name('inventory.account');
+
+// route format with controller
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/inventory/supplier', function () {
+    return view('inventory.supplier');
+})->name('inventory.supplier');
 
 Auth::routes();
 
@@ -43,3 +48,15 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
 Route::group(['middleware' => ['auth', 'role:admin|user']], function(){
     Route::get('/user',[UserController::class,'index'])->name('user');
 });
+
+    // Route::get('/admin/index', [AdminController::class, 'index'])->name('admin.index');
+    // Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store');
+    // // Route::get('/admin/edit/{id}', [AdminController::class, 'edit'])->name('admin.edit');
+    // Route::get('/admin/show/{id}', [AdminController::class, 'show'])->name('admin.show');
+    // Route::put('/admin/update', [AdminController::class, 'update'])->name('admin.update');
+
+    // Route::delete('/admin/destroy/{id}', [AdminController::class, 'destroy'])->name('admin.destroy');
+    // Route::get('/admin/create', [AdminController::class, 'create'])->name('admin.create');
+    // Route::post('/admin', [AdminController::class, 'store'])->name('admin.store');
+
+    // Route::get('/roles/{id}', [RoleController::class, 'show'])->name('roles.show');
