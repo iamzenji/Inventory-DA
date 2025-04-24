@@ -1,4 +1,3 @@
-{{-- <x-modal.modal id="addProductModal" title="Add Product"> --}}
 <div class="table-responsive">
     <table id="{{ $id ?? 'datatable' }}" class="table table-bordered table-striped w-100">
         <thead>
@@ -17,17 +16,15 @@
                     @endforeach
                     <td>
                         <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></button>
-                            <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
+                            <button class="btn btn-sm btn-warning editBtn" data-id="{{ $row[0] }}" data-name="{{ $row[1] }}"><i class="bi bi-pencil"></i></button>
+                            <button class="btn btn-sm btn-danger deleteBtn" data-id="{{ $row[0] }}"><i class="bi bi-trash"></i></button>
                         </div>
                     </td>
                 </tr>
             @endforeach
-
         </tbody>
     </table>
 </div>
-
 
 @once
     @push('scripts')
@@ -43,13 +40,11 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-
     @endpush
 @endonce
 
 @push('scripts')
 <script>
-    
     $(document).ready(function () {
         let domSetup = "<'row'<'col-sm-12 col-md-8'B><'col-sm-12 col-md-4'f>>" +
                     "<'row'<'col-sm-12'tr>>" +
@@ -61,10 +56,16 @@
                 text     : '<i class="bi bi-plus-lg"></i> Add',
                 className: 'btn btn-success',
                 action   : function () {
-                    let modal = new bootstrap.Modal(document.getElementById('addProductModal'));
-                    modal.show();
+                    let modalId = '{{ $modalId ?? null }}';
+                    if (modalId) {
+                        let modal = new bootstrap.Modal(document.getElementById(modalId));
+                        modal.show();
+                    } else {
+                        console.warn('No modal ID provided for Add button');
+                    }
                 }
             },
+
             {
                 extend   : 'copy',
                 text     : '<i class="bi bi-clipboard"></i> Copy',

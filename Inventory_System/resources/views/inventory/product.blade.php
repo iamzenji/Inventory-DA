@@ -7,12 +7,7 @@
 <div class="container mt-4">
     <h2 class="mb-4">Product List</h2>
 
-    <!-- Add Product Button -->
-    {{-- <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
-        <i class="bi bi-plus-lg"></i> Add Product
-    </button> --}}
-
-    <!-- Product Table -->
+    <!-- Product Table (Add button now controlled by DataTable) -->
     <x-table.table
         id="productTable"
         :headers="['Product Type', 'Product Number', 'Serial Number', 'Brand', 'Date Acquired', 'Price', 'Office Location', 'Issued To', 'End User']"
@@ -20,19 +15,19 @@
             ['Laptop', '12345', 'ABC123', 'Brand A', '2024-01-01', '$500', 'Office A', 'Employee 1', 'User A'],
             ['Phone', '67890', 'XYZ678', 'Brand B', '2024-03-01', '$300', 'Office B', 'Employee 2', 'User B']
         ]"
+        modal-id="addProductModal"
     />
 </div>
 
 <!-- Add Product Modal -->
 <x-modal.modal id="addProductModal" title="Add Product">
-
     <form>
         @csrf
         <div class="row">
             <div class="col-sm-6">
                 <x-forms.form
                     label="Product Name"
-                    type="number"
+                    type="text"
                     placeholder="Product Name"
                     col="col-sm-12"
                 />
@@ -102,8 +97,6 @@
                 />
             </div>
         </div>
-        <!-- Add more fields here -->
-
     </form>
 
     @slot('footer')

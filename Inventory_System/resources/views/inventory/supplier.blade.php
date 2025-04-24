@@ -7,12 +7,7 @@
 <div class="container mt-4">
     <h2 class="mb-4">Supplier List</h2>
 
-    <!-- Add Supplier Button -->
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addSupplierModal">
-        <i class="bi bi-plus-lg"></i> Add Supplier
-    </button>
-
-    <!-- Supplier Table -->
+    <!-- Supplier Table (uses DataTable Add button for modal) -->
     <x-table.table
         id="supplierTable"
         :headers="['Supplier Name', 'Address', 'Email', 'Contact Number', 'Contact Person', 'Website', 'TIN']"
@@ -20,6 +15,7 @@
             ['Supplier A', '123 Main St', 'supplierA@example.com', '123-456-7890', 'John Doe', 'www.supplierA.com', '123456789'],
             ['Supplier B', '456 Elm St', 'supplierB@example.com', '098-765-4321', 'Jane Smith', 'www.supplierB.com', '987654321']
         ]"
+        modal-id="addSupplierModal"
     />
 </div>
 

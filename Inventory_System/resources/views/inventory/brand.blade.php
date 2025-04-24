@@ -8,12 +8,7 @@
 <div class="container mt-4">
     <h2 class="mb-4">Brand List</h2>
 
-    <!-- Add Brand Button -->
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addBrandModal">
-        <i class="bi bi-plus-lg"></i> Add Brand
-    </button>
-
-    <!-- Brand Table -->
+    <!-- Brand Table (No separate Add button anymore) -->
     <x-table.table
         id="brandTable"
         :headers="['Brand Name']"
@@ -21,6 +16,7 @@
             ['Brand A'],
             ['Brand B']
         ]"
+        modal-id="addBrandModal"
     />
 </div>
 

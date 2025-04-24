@@ -1,4 +1,3 @@
-<!-- Modal Component -->
 <div class="modal fade" id="{{ $id }}" tabindex="-1" aria-labelledby="{{ $id }}Label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -9,10 +8,14 @@
             <div class="modal-body">
                 {{ $slot }}
             </div>
-            {{-- <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save Product</button>
-            </div> --}}
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ $closeButtonText ?? 'Close' }}</button>
+
+                @if (isset($saveButtonText))
+                    <button type="button" id="saveProductNameBtn" class="btn btn-primary" data-action="{{ $saveAction }}">{{ $saveButtonText }}</button>
+                @endif
+            </div>
         </div>
     </div>
 </div>
+

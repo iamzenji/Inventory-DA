@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,8 +40,6 @@ Route::get('/inventory/product-names', function () {
 
 Route::get('/inventory/account',[UserController::class,'index' ])->name('inventory.account');
 
-
-
 Route::get('/inventory/supplier', function () {
     return view('inventory.supplier');
 })->name('inventory.supplier');
@@ -49,12 +48,31 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+
+// ADMIN
 Route::group(['middleware' => ['auth', 'role:admin']], function(){
     Route::get('/admin',[AdminController::class,'index'])->name('admin');
 });
+
+// USER
 Route::group(['middleware' => ['auth', 'role:admin|user']], function(){
     Route::get('/user',[UserController::class,'index'])->name('user');
+
+    // PRODUCT LIST
+    Route::resource('product-names', ProductController::class);
+    Route::get('/product-names', [ProductController::class, 'index'])->name('product-names.index');
+    Route::post('/product-names', [ProductController::class, 'store'])->name('product-names.store');
+    Route::put('/product-names/{product}', [ProductController::class, 'update'])->name('product-names.update');
+    Route::delete('/product-names/{product}', [ProductController::class, 'destroy'])->name('product-names.destroy');
+
 });
+// PRODUCT LIST
+    Route::resource('product-names', ProductController::class);
+    Route::get('/product-names', [ProductController::class, 'index'])->name('product-names.index');
+    Route::post('/product-names', [ProductController::class, 'store'])->name('product-names.store');
+    Route::put('/product-names/{product}', [ProductController::class, 'update'])->name('product-names.update');
+    Route::delete('/product-names/{product}', [ProductController::class, 'destroy'])->name('product-names.destroy');
+
 
     // Route::get('/admin/index', [AdminController::class, 'index'])->name('admin.index');
     // Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store');
