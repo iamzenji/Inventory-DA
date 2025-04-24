@@ -29,10 +29,17 @@ Route::get('/inventory/dashboard', function () {
     return view('inventory.dashboard');
 })->name('inventory.dashboard');
 
+Route::get('/inventory/brand', function () {
+    return view('inventory.brand');
+})->name('inventory.brand');
+
+Route::get('/inventory/product-names', function () {
+    return view('inventory.product-names');
+})->name('inventory.product-names');
+
 Route::get('/inventory/account',[UserController::class,'index' ])->name('inventory.account');
 
-// route format with controller
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 
 Route::get('/inventory/supplier', function () {
     return view('inventory.supplier');
