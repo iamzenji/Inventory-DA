@@ -27,7 +27,14 @@
         <a class="nav-link" href="#"><i class="bi-tags"></i> <span>Organization $ Label</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#"><i class="bi-gear"></i> <span>Settings</span></a>
+        <a class="nav-link" href="#" id="settings-toggle">
+          <i class="bi-gear"></i> <span>Settings</span>
+        </a>
+        <ul class="nav-dropdown" id="settings-dropdown" style="display: none;">
+          <li><a class="nav-link" href="{{ route('inventory.product-names') }}">Add Product</a></li>
+          <li><a class="nav-link" href="{{ route('inventory.brand') }}">Add Brand</a></li>
+          <li><a class="nav-link" href="#">None</a></li>
+        </ul>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#"><i class="#"></i> <span>Log out</span></a>
@@ -36,24 +43,6 @@
   </div>
 </div>
 
-<script>
-  const sidebar = document.getElementById("sidebar");
 
-  function toggleSidebar() {
-    if (window.innerWidth < 768) {
-      sidebar.classList.toggle("show");
-    } else {
-      sidebar.classList.toggle("collapsed");
-      document.body.classList.toggle("sidebar-collapsed");
-    }
-  }
 
-  // Auto-collapse on resize
-  window.addEventListener("resize", () => {
-    if (window.innerWidth < 768) {
-      sidebar.classList.remove("collapsed");
-      document.body.classList.remove("sidebar-collapsed");
-    }
-  });
-</script>
 
