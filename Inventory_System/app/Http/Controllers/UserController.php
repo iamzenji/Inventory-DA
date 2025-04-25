@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 class UserController extends Controller
 {
     /**
@@ -70,4 +71,21 @@ class UserController extends Controller
     {
         //
     }
+
+    public function getUsersData(Request $request)
+{
+    $users = User::select(['id', 'name', 'email', 'role']);
+    
+    return DataTables::of($users)
+        ->addColumn('action', function ($user) {
+            return '
+                <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-warning editBtn"><i class="bi bi-pencil"></i></button>
+                    <button class="btn btn-sm btn-danger deleteBtn"><i class="bi bi-trash"></i></button>
+                </div>';
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+}
+
 }

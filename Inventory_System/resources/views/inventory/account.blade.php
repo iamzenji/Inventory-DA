@@ -1,54 +1,174 @@
 @extends('layouts.app')
 @section('content')
-<x-sidebar.sidebar/>
-<div class="container mt-4">
-    <h2 class="mb-4">Account Management</h2>
-    <!-- Product Table -->
-    <x-table.table
-        id="accountTable"
-        :headers="['Name', 'Email', 'Role']"
-        :rows="[
-            ['daryl', 'daryl@gmail.com', 'admin'],
-            ['zenji', 'zenji@gmail.com', 'user']
-        ]"
+{{-- Data Table --}}
+<div class="container">
+    <h2 class="mb-4">Account Information</h2>
+    <div class="table-responsive">
+        <table id="myDataTable" class="table table-bordered table-striped w-100">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Action</th>
 
-        datas={{ $users }}
-    />
+                </tr>
+            </thead>
+            {{-- <tbody>
+                @foreach($users as $user)
+
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->role }}</td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-warning editBtn" >
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger deleteBtn">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody> --}}
+        </table>
+    </div>
 </div>
-    {{-- {{ $users }} --}}
-<table>
-    <thead>
-        <tr>
-            <th>name</th>
-            <th>email</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($users as $user)
-        <tr>
-            <td> {{ $user->name }}</td>
-            <td>{{ $user->email }}</td>
-        </tr>
-        @endforeach
-    </tbody>
-
-</table>
-<x-modal.modal id="addProductModal" title="Add Account">
-    <form method="POST">
-        @csrf
-        <x-forms.form name="name" label="Name" type="text" placeholder="Full Name" />
-        <x-forms.form name="email" label="Email" type="email" placeholder="Email" />
-        
-        <select name="role" id="" class="form-control" >
-            <option value="">Select role</option>
-            @foreach ($roles as $role)
-                <option value="{{ $role->name }}"> {{ $role->name }}</option>
-            @endforeach
-        </select>
-
-        <button type="submit" class="btn btn-primary mt-2">Create</button>
-    </form>
 
 
-</x-modal.modal>
+<!-- Modal -->
+<div class="modal fade" id="addModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Account</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="mb-3">
+                    <label for="inputName" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="inputName" placeholder="Input Name">
+                </div>
+
+                <div class="mb-3">
+                    <label for="inputEmail" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="inputEmail" placeholder="Input Email">
+                </div>
+
+                <div class="mb-3">
+                        <label for="userRole" class="form-label">Role</label>
+                        <select class="form-select" id="userRole" aria-label="Default select example">
+                            <option value="" selected disabled>Choose a role...</option> <!-- Default empty option -->
+                            <option value="admin">Admin</option>
+                            <option value="user">User</option>
+                        </select>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        const domSetup = "<'row'<'col-sm-12 col-md-8'B><'col-sm-12 col-md-4'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>";
+
+        const A_LENGTH_MENU = [[10, 25, 50, 100, -1], ['10 rows', '25 rows', '50 rows', '100 rows', 'Show all']];
+
+        const TABLE_BUTTONS = [
+            {
+                text     : '<i class="bi bi-plus-lg"></i> Add',
+                className: 'btn btn-success',
+                action   : function () {
+                    let modal = new bootstrap.Modal(document.getElementById('addModal'));
+                    modal.show();
+                }
+            },
+            {
+                extend   : 'copy',
+                text     : '<i class="bi bi-clipboard"></i> Copy',
+                className: 'btn btn-success'
+            },
+            {
+                extend   : 'excel',
+                text     : '<i class="bi bi-file-earmark-excel"></i> Excel',
+                className: 'btn btn-success'
+            },
+            {
+                extend   : 'csv',
+                text     : '<i class="bi bi-file-earmark-text"></i> CSV',
+                className: 'btn btn-success'
+            },
+            {
+                extend   : 'pdf',
+                text     : '<i class="bi bi-file-earmark-pdf"></i> PDF',
+                className: 'btn btn-success'
+            },
+            {
+                extend   : 'print',
+                text     : '<i class="bi bi-printer"></i> Print',
+                className: 'btn btn-success'
+            },
+            {
+                extend   : 'colvis',
+                text     : '<i class="fas fa-columns"></i> Column Visibility',
+                className: 'btn btn-success'
+            }
+        ];
+
+        $('#myDataTable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ route('users.data') }}",
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            },
+            columns: [
+                { data: 'id' },
+                { data: 'name' },
+                { data: 'email' },
+                { data: 'role' },
+                { data: 'action', orderable: false, searchable: false }
+            ],
+            dom: domSetup,
+            aLengthMenu: A_LENGTH_MENU,
+            responsive: true,
+            autoWidth: false,
+            buttons: TABLE_BUTTONS
+        });
+    });
+</script>
+
+
+<!-- Include scripts only once -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css">
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.colVis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+
 @endsection

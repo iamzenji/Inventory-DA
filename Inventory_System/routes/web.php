@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,14 @@ use App\Http\Controllers\ProductController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/hello-ajax', function () {
+    return response()->json('Hello from backend!');
+})->name('hello.ajax');
+// Route::match(['get', 'post'], '/hello-ajax', function () {
+//     return response()->json('Hello from backend!');
+// })->name('hello.ajax');
+
 
 Route::get('/', function () {
     return view('inventory.inventory');
@@ -40,9 +49,13 @@ Route::get('/inventory/product-names', function () {
 
 Route::get('/inventory/account',[UserController::class,'index' ])->name('inventory.account');
 
+
+
+
 Route::get('/inventory/supplier', function () {
     return view('inventory.supplier');
 })->name('inventory.supplier');
+
 
 Auth::routes();
 
@@ -73,7 +86,7 @@ Route::group(['middleware' => ['auth', 'role:admin|user']], function(){
     Route::put('/product-names/{product}', [ProductController::class, 'update'])->name('product-names.update');
     Route::delete('/product-names/{product}', [ProductController::class, 'destroy'])->name('product-names.destroy');
 
-
+    Route::post('/get-users-data', [UserController::class, 'getUsersData'])->name('users.data');
     // Route::get('/admin/index', [AdminController::class, 'index'])->name('admin.index');
     // Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store');
     // // Route::get('/admin/edit/{id}', [AdminController::class, 'edit'])->name('admin.edit');

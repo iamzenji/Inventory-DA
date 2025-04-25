@@ -2,7 +2,7 @@
 @section('content')
 
 <x-sidebar.sidebar/>
-<x-forms.form/>
+
 
 
 

@@ -1,108 +1,133 @@
 @extends('layouts.app')
-
-@section('title', 'Product List')
-
 @section('content')
-<x-sidebar.sidebar/>
-<div class="container mt-4">
-    <h2 class="mb-4">Product List</h2>
+<div class="container">
+    <h2 class="mb-4">Product</h2>
+    <div class="table-responsive">
+        <table id="myDataTable" class="table table-bordered table-striped w-100">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Product Type</th>
+                    <th>Product Number</th>
+                    <th>Serial Number</th>
+                    <th>Brand</th>
+                    <th>Date Acquired</th>
+                    <th>Price</th>
+                    <th>Office Location</th>
+                    <th>Issued To</th>
+                    <th>End User</th>
+                    <th>Action</th>
 
-    <!-- Product Table (Add button now controlled by DataTable) -->
-    <x-table.table
-        id="productTable"
-        :headers="['Product Type', 'Product Number', 'Serial Number', 'Brand', 'Date Acquired', 'Price', 'Office Location', 'Issued To', 'End User']"
-        :rows="[
-            ['Laptop', '12345', 'ABC123', 'Brand A', '2024-01-01', '$500', 'Office A', 'Employee 1', 'User A'],
-            ['Phone', '67890', 'XYZ678', 'Brand B', '2024-03-01', '$300', 'Office B', 'Employee 2', 'User B']
-        ]"
-        modal-id="addProductModal"
-    />
+                </tr>
+            </thead>
+            <tbody>
+                {{-- @foreach ($rows as $row) --}}
+                    <tr>
+                        {{-- <td>{!! $row[0] !!}</td>
+                        <td>{!! $row[1] !!}</td>
+                        <td>{!! $row[2] !!}</td> --}}
+                        <td>1</td>
+                        <td>Laptop</td>
+                        <td>1234556</td>
+                        <td>34141</td>
+                        <td>Acer</td>
+                        <td>04/2/2025</td>
+                        <td>30,000</td>
+                        <td>Raed</td>
+                        <td>04/20/2025</td>
+                        <td>daryl</td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                {{-- <button class="btn btn-sm btn-warning editBtn" data-id="{{ $row[0] }}" data-name="{{ $row[1] }}">
+                                    <i class="bi bi-pencil"></i>
+                                </button> --}}
+                                <button class="btn btn-sm btn-warning editBtn" >
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                {{-- <button class="btn btn-sm btn-danger deleteBtn" data-id="{{ $row[0] }}">
+                                    <i class="bi bi-trash"></i>
+                                </button> --}}
+                                <button class="btn btn-sm btn-danger deleteBtn">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                {{-- @endforeach --}}
+            </tbody>
+        </table>
+    </div>
 </div>
+<!-- Include scripts only once -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css">
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.colVis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
-<!-- Add Product Modal -->
-<x-modal.modal id="addProductModal" title="Add Product">
-    <form>
-        @csrf
-        <div class="row">
-            <div class="col-sm-6">
-                <x-forms.form
-                    label="Product Name"
-                    type="text"
-                    placeholder="Product Name"
-                    col="col-sm-12"
-                />
-            </div>
-            <div class="col-sm-6">
-                <x-forms.form
-                    label="Product Number"
-                    type="number"
-                    placeholder="Product Number"
-                    col="col-sm-12"
-                />
-            </div>
-            <div class="col-sm-6">
-                <x-forms.form
-                    label="Serial Number"
-                    type="text"
-                    placeholder="Serial Name"
-                    col="col-sm-12"
-                />
-            </div>
-            <div class="col-sm-6">
-                <x-forms.form
-                    label="Brand"
-                    type="text"
-                    placeholder="Brand"
-                    col="col-sm-12"
-                />
-            </div>
-            <div class="col-sm-6">
-                <x-forms.form
-                    label="Date Acquired"
-                    type="date"
-                    placeholder="Date Acquired"
-                    col="col-sm-12"
-                />
-            </div>
-            <div class="col-sm-6">
-                <x-forms.form
-                    label="Price"
-                    type="text"
-                    placeholder="Price"
-                    col="col-sm-12"
-                />
-            </div>
-            <div class="col-sm-4">
-                <x-forms.form
-                    label="Office Location"
-                    type="text"
-                    placeholder="Office Location"
-                    col="col-sm-12"
-                />
-            </div>
-            <div class="col-sm-4">
-                <x-forms.form
-                    label="Issue To"
-                    type="text"
-                    placeholder="Issue To"
-                    col="col-sm-12"
-                />
-            </div>
-            <div class="col-sm-4">
-                <x-forms.form
-                    label="End User"
-                    type="text"
-                    placeholder="End User"
-                    col="col-sm-12"
-                />
-            </div>
-        </div>
-    </form>
+<script>
+    $(document).ready(function () {
+        let domSetup = "<'row'<'col-sm-12 col-md-8'B><'col-sm-12 col-md-4'f>>" +
+                       "<'row'<'col-sm-12'tr>>" +
+                       "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>";
 
-    @slot('footer')
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save</button>
-    @endslot
-</x-modal.modal>
+        const A_LENGTH_MENU = [[10, 25, 50, 100, -1], ['10 rows', '25 rows', '50 rows', '100 rows', 'Show all']];
 
+        const TABLE_BUTTONS = [
+            {
+                text     : '<i class="bi bi-plus-lg"></i> Add',
+                className: 'btn btn-success',
+                action   : function () {
+                    let modal = new bootstrap.Modal(document.getElementById('addModal'));
+                    modal.show();
+                }
+            },
+            {
+                extend   : 'copy',
+                text     : '<i class="bi bi-clipboard"></i> Copy',
+                className: 'btn btn-success'
+            },
+            {
+                extend   : 'excel',
+                text     : '<i class="bi bi-file-earmark-excel"></i> Excel',
+                className: 'btn btn-success'
+            },
+            {
+                extend   : 'csv',
+                text     : '<i class="bi bi-file-earmark-text"></i> CSV',
+                className: 'btn btn-success'
+            },
+            {
+                extend   : 'pdf',
+                text     : '<i class="bi bi-file-earmark-pdf"></i> PDF',
+                className: 'btn btn-success'
+            },
+            {
+                extend   : 'print',
+                text     : '<i class="bi bi-printer"></i> Print',
+                className: 'btn btn-success'
+            },
+            {
+                extend   : 'colvis',
+                text     : '<i class="fas fa-columns"></i> Column Visibility',
+                className: 'btn btn-success'
+            }
+        ];
+
+        $('#myDataTable').DataTable({
+            dom: domSetup,
+            aLengthMenu: A_LENGTH_MENU,
+            buttons: TABLE_BUTTONS,
+            responsive: true,
+            autoWidth: false
+        });
+    });
+</script>
 @endsection
