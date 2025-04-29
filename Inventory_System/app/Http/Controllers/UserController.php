@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Hash;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -33,11 +33,15 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:admin_table,email',
+            'email' => 'required|email|unique:users,email',
+            'role' => 'required|string'
         ]);
+    
+        $validated['password'] = Hash::make('defaultpassword123'); // or generate a secure one
+    
         User::create($validated);
-
-        return redirect()->route('inventory.account')->with('success', 'Post created successfully!');
+    
+        return response()->json(['message' => 'User created successfully.']);
     }
 
     /**

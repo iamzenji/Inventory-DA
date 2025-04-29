@@ -26,9 +26,7 @@ Route::get('/hello-ajax', function () {
 // })->name('hello.ajax');
 
 
-Route::get('/', function () {
-    return view('inventory.inventory');
-});
+
 
 // route to product page
 Route::get('/inventory/product', function () {
@@ -65,6 +63,13 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // ADMIN
 Route::group(['middleware' => ['auth', 'role:admin']], function(){
     Route::get('/admin',[AdminController::class,'index'])->name('admin');
+    // TRY ROUTES
+    Route::get('/bbb', [TryController::class, 'index']);
+    Route::post('/store', [TryController::class, 'store'])->name('store');
+    Route::get('/fetchall', [TryController::class, 'fetchAll'])->name('fetchAll');
+    Route::delete('/delete', [TryController::class, 'delete'])->name('delete');
+    Route::get('/edit', [TryController::class, 'edit'])->name('edit');
+    Route::post('/update', [TryController::class, 'update'])->name('update');
 });
 
 // USER
@@ -87,6 +92,8 @@ Route::group(['middleware' => ['auth', 'role:admin|user']], function(){
     Route::delete('/product-names/{product}', [ProductController::class, 'destroy'])->name('product-names.destroy');
 
     Route::post('/get-users-data', [UserController::class, 'getUsersData'])->name('users.data');
+    Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
+
     // Route::get('/admin/index', [AdminController::class, 'index'])->name('admin.index');
     // Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store');
     // // Route::get('/admin/edit/{id}', [AdminController::class, 'edit'])->name('admin.edit');
@@ -98,3 +105,14 @@ Route::group(['middleware' => ['auth', 'role:admin|user']], function(){
     // Route::post('/admin', [AdminController::class, 'store'])->name('admin.store');
 
     // Route::get('/roles/{id}', [RoleController::class, 'show'])->name('roles.show');
+
+
+
+    
+
+    // Route::get('/product', [ProductController::class, 'index']);
+    // Route::post('/store', [ProductController::class, 'store'])->name('store');
+    // Route::get('/fetchall', [ProductController::class, 'fetchAll'])->name('fetchAll');
+    // Route::delete('/delete', [ProductController::class, 'delete'])->name('delete');
+    // Route::get('/edit', [ProductController::class, 'edit'])->name('edit');
+    // Route::post('/update', [ProductController::class, 'update'])->name('update');

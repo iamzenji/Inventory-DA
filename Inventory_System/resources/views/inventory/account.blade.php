@@ -15,8 +15,8 @@
 
                 </tr>
             </thead>
-            {{-- <tbody>
-                @foreach($users as $user)
+            <tbody>
+                {{-- @foreach($users as $user)
 
                     <tr>
                         <td>{{ $loop->iteration }}</td>
@@ -34,8 +34,8 @@
                             </div>
                         </td>
                     </tr>
-                @endforeach
-            </tbody> --}}
+                @endforeach --}}
+            </tbody>
         </table>
     </div>
 </div>
@@ -50,30 +50,31 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <form id="addUserForm">
+                    <div class="mb-3">
+                        <label for="inputName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="inputName" placeholder="Input Name">
+                    </div>
 
-                <div class="mb-3">
-                    <label for="inputName" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="inputName" placeholder="Input Name">
-                </div>
+                    <div class="mb-3">
+                        <label for="inputEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="inputEmail" placeholder="Input Email">
+                    </div>
 
-                <div class="mb-3">
-                    <label for="inputEmail" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="inputEmail" placeholder="Input Email">
-                </div>
-
-                <div class="mb-3">
-                        <label for="userRole" class="form-label">Role</label>
-                        <select class="form-select" id="userRole" aria-label="Default select example">
-                            <option value="" selected disabled>Choose a role...</option> <!-- Default empty option -->
-                            <option value="admin">Admin</option>
-                            <option value="user">User</option>
-                        </select>
-                </div>
-
+                    <div class="mb-3">
+                            <label for="userRole" class="form-label">Role</label>
+                            <select class="form-select" id="userRole" aria-label="Default select example">
+                                <option value="" selected disabled>Choose a role...</option> <!-- Default empty option -->
+                                <option value="admin">Admin</option>
+                                <option value="user">User</option>
+                            </select>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Add</button>
+                <button type="button" class="btn btn-primary" id="saveUserBtn">Add</button>
+
             </div>
         </div>
     </div>
@@ -153,6 +154,22 @@
             buttons: TABLE_BUTTONS
         });
     });
+    $('#saveUserBtn').click(function() {
+    let data = {
+        name: $('#inputName').val(),
+        email: $('#inputEmail').val(),
+        role: $('#userRole').val(),
+        _token: $('meta[name="csrf-token"]').attr('content')
+    };
+    
+    $.post("{{ route('users.store') }}", data, function(response) {
+        $('#addModal').modal('hide');
+        $('#myDataTable').DataTable().ajax.reload();
+    }).fail(function(xhr) {
+        alert('Error: ' + xhr.responseJSON.message);
+    });
+});
+
 </script>
 
 
