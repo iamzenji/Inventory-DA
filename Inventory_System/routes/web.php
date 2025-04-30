@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SampleController;
 use App\Http\Controllers\TryController;
 
 /*
@@ -63,13 +64,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // ADMIN
 Route::group(['middleware' => ['auth', 'role:admin']], function(){
     Route::get('/admin',[AdminController::class,'index'])->name('admin');
-    // TRY ROUTES
-    Route::get('/bbb', [TryController::class, 'index']);
-    Route::post('/store', [TryController::class, 'store'])->name('store');
-    Route::get('/fetchall', [TryController::class, 'fetchAll'])->name('fetchAll');
-    Route::delete('/delete', [TryController::class, 'delete'])->name('delete');
-    Route::get('/edit', [TryController::class, 'edit'])->name('edit');
-    Route::post('/update', [TryController::class, 'update'])->name('update');
+   
 });
 
 // USER
@@ -77,19 +72,19 @@ Route::group(['middleware' => ['auth', 'role:admin|user']], function(){
     Route::get('/user',[UserController::class,'index'])->name('user');
 
     // PRODUCT LIST
-    Route::resource('product-names', ProductController::class);
-    Route::get('/product-names', [ProductController::class, 'index'])->name('product-names.index');
-    Route::post('/product-names', [ProductController::class, 'store'])->name('product-names.store');
-    Route::put('/product-names/{product}', [ProductController::class, 'update'])->name('product-names.update');
-    Route::delete('/product-names/{product}', [ProductController::class, 'destroy'])->name('product-names.destroy');
+    // Route::resource('product-names', ProductController::class);
+    // Route::get('/product-names', [ProductController::class, 'index'])->name('product-names.index');
+    // Route::post('/product-names', [ProductController::class, 'store'])->name('product-names.store');
+    // Route::put('/product-names/{product}', [ProductController::class, 'update'])->name('product-names.update');
+    // Route::delete('/product-names/{product}', [ProductController::class, 'destroy'])->name('product-names.destroy');
 
 });
 // PRODUCT LIST
-    Route::resource('product-names', ProductController::class);
-    Route::get('/product-names', [ProductController::class, 'index'])->name('product-names.index');
-    Route::post('/product-names', [ProductController::class, 'store'])->name('product-names.store');
-    Route::put('/product-names/{product}', [ProductController::class, 'update'])->name('product-names.update');
-    Route::delete('/product-names/{product}', [ProductController::class, 'destroy'])->name('product-names.destroy');
+    // Route::resource('product-names', ProductController::class);
+    // Route::get('/product-names', [ProductController::class, 'index'])->name('product-names.index');
+    // Route::post('/product-names', [ProductController::class, 'store'])->name('product-names.store');
+    // Route::put('/product-names/{product}', [ProductController::class, 'update'])->name('product-names.update');
+    // Route::delete('/product-names/{product}', [ProductController::class, 'destroy'])->name('product-names.destroy');
 
     Route::post('/get-users-data', [UserController::class, 'getUsersData'])->name('users.data');
     Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
@@ -116,3 +111,19 @@ Route::group(['middleware' => ['auth', 'role:admin|user']], function(){
     // Route::delete('/delete', [ProductController::class, 'delete'])->name('delete');
     // Route::get('/edit', [ProductController::class, 'edit'])->name('edit');
     // Route::post('/update', [ProductController::class, 'update'])->name('update');
+
+     // TRY ROUTES
+     Route::get('/bbb', [TryController::class, 'index']);
+     Route::post('/store', [TryController::class, 'store'])->name('store');
+     Route::get('/fetchall', [TryController::class, 'fetchAll'])->name('fetchAll');
+     Route::post('/delete', [TryController::class, 'delete'])->name('delete');
+
+     Route::get('/edit', [TryController::class, 'edit'])->name('edit');
+     Route::post('/update', [TryController::class, 'update'])->name('update');
+
+     Route::get('/aaa', [SampleController::class, 'index']);
+     Route::post('/store-sample', [SampleController::class, 'store'])->name('sample.store');
+     Route::get('/fetchall-sample', [SampleController::class, 'fetchAll'])->name('sample.fetchAll');
+     Route::delete('/delete-sample', [SampleController::class, 'delete'])->name('sample.delete');
+     Route::get('/edit-sample', [SampleController::class, 'edit'])->name('sample.edit');
+     Route::post('/update-sample', [SampleController::class, 'update'])->name('sample.update');

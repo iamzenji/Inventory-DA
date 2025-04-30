@@ -1,13 +1,11 @@
 @extends('layouts.app')
 @section('content')
-<!-- DataTables CSS -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+
 
 {{-- Add Employee Modal --}}
 <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-     data-bs-backdrop="static" aria-hidden="true">
+    data-bs-backdrop="static" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -76,11 +74,17 @@
       <table id="employeeTable" class="table table-bordered table-striped w-100">
         <thead>
           <tr>
-            <th>ID</th><th>Avatar</th><th>Name</th><th>Email</th><th>Post</th><th>Phone</th><th>Action</th>
+            <th>ID</th>
+            <th>Avatar</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Post</th>
+            <th>Phone</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody id="show_all_employees">
-          <tr><td colspan="7" class="text-center text-secondary py-5">Loading...</td></tr>
+          <tr><td colspan="7" class="text-center  py-5">Loading...</td></tr>
         </tbody>
       </table>
     </div>
@@ -109,37 +113,114 @@ $(function() {
   fetchAllEmployees();
 
   function fetchAllEmployees() {
-    $.get("{{ route('fetchAll') }}", {}, function(html) {
-      $("#show_all_employees").html(html);
-      // initialize DataTable
-      $('#employeeTable').DataTable({
-        order: [0, 'desc'],
-        dom: "<'row'<'col-md-8'B><'col-md-4'f>>" +
-             "<'row'<'col-12'tr>>" +
-             "<'row'<'col-md-5'i><'col-md-7'p>>",
-        aLengthMenu: [[10,25,50,100,-1], ['10 rows','25 rows','50 rows','100 rows','Show all']],
-        responsive: true,
-        autoWidth: false,
-        buttons: [
-          {
-            text     : '<i class="bi bi-plus-lg"></i> Add',
-            className: 'btn btn-success',
-            action   : function () {
-              new bootstrap.Modal($('#addEmployeeModal')).show();
-            }
-          },
-          { extend: 'copy',  text: '<i class="bi bi-clipboard"></i> Copy',   className: 'btn btn-success' },
-          { extend: 'excel', text: '<i class="bi bi-file-earmark-excel"></i> Excel', className: 'btn btn-success' },
-          { extend: 'csv',   text: '<i class="bi bi-file-earmark-text"></i> CSV',   className: 'btn btn-success' },
-          { extend: 'pdf',   text: '<i class="bi bi-file-earmark-pdf"></i> PDF',   className: 'btn btn-success' },
-          { extend: 'print', text: '<i class="bi bi-printer"></i> Print',        className: 'btn btn-success' },
-          { extend: 'colvis',text: '<i class="fas fa-columns"></i> Column Visibility', className: 'btn btn-success' }
-        ]
-      });
-    });
-  }
+  $.get("{{ route('fetchAll') }}", {}, function(html) {
+    // Destroy previous instance
+    if ($.fn.DataTable.isDataTable('#employeeTable')) {
+      $('#employeeTable').DataTable().destroy();
+    }
 
+    // Replace table body content
+    $("#show_all_employees").html(html);
+
+    // Reinitialize DataTable
+    $('#employeeTable').DataTable({
+      order: [0, 'desc'],
+      dom: "<'row'<'col-md-8'B><'col-md-4'f>>" +
+          "<'row'<'col-12'tr>>" +
+          "<'row'<'col-md-5'i><'col-md-7'p>>",
+      aLengthMenu: [[10,25,50,100,-1], ['10 rows','25 rows','50 rows','100 rows','Show all']],
+      responsive: true,
+      autoWidth: false,
+      buttons: [
+        {
+          text     : '<i class="bi bi-plus-lg"></i> Add',
+          className: 'btn btn-success',
+          action   : function () {
+            new bootstrap.Modal($('#addEmployeeModal')).show();
+          }
+        },
+        { extend: 'copy',  text: '<i class="bi bi-clipboard"></i> Copy',   className: 'btn btn-success' },
+        { extend: 'excel', text: '<i class="bi bi-file-earmark-excel"></i> Excel', className: 'btn btn-success' },
+        { extend: 'csv',   text: '<i class="bi bi-file-earmark-text"></i> CSV',   className: 'btn btn-success' },
+        { extend: 'pdf',   text: '<i class="bi bi-file-earmark-pdf"></i> PDF',   className: 'btn btn-success' },
+        { extend: 'print', text: '<i class="bi bi-printer"></i> Print',        className: 'btn btn-success' },
+        { extend: 'colvis',text: '<i class="fas fa-columns"></i> Column Visibility', className: 'btn btn-success' }
+      ]
+    });
+  });
+}
   // Your existing AJAX handlers for add/edit/delete go here...
 });
+
+$('#add_employee_form').submit(function(e) {
+  e.preventDefault();
+  const form = this;
+  let formData = new FormData(form);
+
+  $('#add_employee_btn').text('Adding...');
+
+  $.ajax({
+    url: "{{ route('store') }}",
+    method: 'POST',
+    data: formData,
+    contentType: false,
+    processData: false,
+    success: function(res) {
+      if (res.status === 200) {
+        Swal.fire('Success!', 'Employee added successfully!', 'success');
+        $('#add_employee_form')[0].reset(); // reset form
+        $('#addEmployeeModal').modal('hide'); // close modal
+        fetchAllEmployees(); // refresh the table
+
+      }
+      $('#add_employee_btn').text('Add Employee');
+    },
+    error: function(err) {
+      console.error(err);
+      Swal.fire('Error!', 'Something went wrong while adding employee.', 'error');
+      $('#add_employee_btn').text('Add Employee');
+    }
+  });
+});
+
+// Delete Employee
+$(document).on('click', '.deleteIcon', function(e) {
+  e.preventDefault();
+  let id = $(this).attr('id');
+
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        url: "{{ route('delete') }}",
+        method: 'POST',
+        data: {
+          _token: '{{ csrf_token() }}',
+          id: id
+        },
+        success: function(res) {
+          if (res.status === 200) {
+            Swal.fire('Deleted!', res.message, 'success');
+            fetchAllEmployees();
+          } else {
+            Swal.fire('Error!', res.message, 'error');
+          }
+        },
+        error: function(err) {
+          console.error(err);
+          Swal.fire('Error!', 'Failed to delete employee.', 'error');
+        }
+      });
+    }
+  });
+});
+
 </script>
 @endsection
