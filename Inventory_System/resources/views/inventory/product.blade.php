@@ -1,240 +1,342 @@
 @extends('layouts.app')
+
 @section('content')
-<div class="container">
-    <h2 class="mb-4">Product</h2>
-    <div class="table-responsive">
-        <table id="myDataTable" class="table table-bordered table-striped w-100">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Product Type</th>
-                    <th>Product Number</th>
-                    <th>Serial Number</th>
-                    <th>Brand</th>
-                    <th>Date Acquired</th>
-                    <th>Price</th>
-                    <th>Office Location</th>
-                    <th>Issued To</th>
-                    <th>End User</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
+    {{-- DISPLAY DATA --}}
+    <div class="container">
+        {{-- Breadcrumb Navigation --}}
+        <div class="row align-items-center mb-3">
+            <div class="col-md-6">
+                <h2 class="fw-bold text-success">Registered Products</h2>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-md-end">
+                        <li class="breadcrumb-item"><a href="{{ route('home') }}" class="text-decoration-none text-success">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Registered Products</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        {{-- TABLE --}}
+        <div class="table-responsive" style="border: 1px solid #ddd; border-radius: 10px; padding: 10px; border-collapse: separate; border-spacing: 0;">
+            <table id="products-table" class="table table-striped">
+                <thead>
                     <tr>
-                        @foreach ($products as $product)
-                        <tr>
-                            <td>{{ $product->id }}</td>
-                            <td>{{ $product->product_type }}</td>
-                            <td>{{ $product->product_number }}</td>
-                            <td>{{ $product->serial_number }}</td>
-                            <td>{{ $product->brand }}</td>
-                            <td>{{ $product->date_acquired }}</td>
-                            <td>{{ number_format($product->price, 2) }}</td>
-                            <td>{{ $product->office_location }}</td>
-                            <td>{{ $product->issued_to }}</td>
-                            <td>{{ $product->end_user }}</td>
-                        <td>
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-sm btn-warning editBtn">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button class="btn btn-sm btn-danger deleteBtn">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        <th>ID</th>
+                        <th>Product Type</th>
+                        <th>Product Number</th>
+                        <th>Serial Number</th>
+                        <th>Brand</th>
+                        <th>Date Acquired</th>
+                        <th>Price</th>
+                        <th>Office Location</th>
+                        <th>Issued To</th>
+                        <th>End User</th>
+                        <th style="width: 150px;">Actions</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-</div>
-
-{{-- Add Modal --}}
-<div class="modal fade" id="addProduct" tabindex="-1" aria-labelledby="exampleModalLabel"
-    data-bs-backdrop="static" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add New Product</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <form id="add_employee_form" action="{{ route('product-names.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <div class="modal-body p-4 bg-light">
-
-          <div class="my-2">
-            <label>Product Type</label>
-            <input type="text" name="product_type" class="form-control" required>
-          </div>
-
-          <div class="my-2">
-            <label>Product Number</label>
-            <input type="text" name="product_number" class="form-control" required>
-          </div>
-
-          <div class="my-2">
-            <label>Serial Number</label>
-            <input type="text" name="serial_number" class="form-control" required>
-          </div>
-
-          <div class="my-2">
-            <label>Brand</label>
-            <input type="text" name="brand" class="form-control" required>
-          </div>
-
-          <div class="my-2">
-            <label>Date Acquired</label>
-            <input type="date" name="date_acquired" class="form-control" required>
-          </div>
-
-          <div class="my-2">
-            <label>Price</label>
-            <input type="text" name="price" class="form-control" required>
-          </div>
-
-          <div class="my-2">
-            <label>Office Location</label>
-            <input type="text" name="office_location" class="form-control" required>
-          </div>
-
-          <div class="my-2">
-            <label>Issued To</label>
-            <input type="text" name="issued_to" class="form-control" required>
-          </div>
-
-          <div class="my-2">
-            <label>End User</label>
-            <input type="text" name="end_user" class="form-control" required>
-          </div>
-
+                </thead>
+            </table>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" id="add_employee_btn" class="btn btn-primary">Add Product</button>
-        </div>
-      </form>
     </div>
-  </div>
-</div>
 
+    {{-- ADD PRODUCT MODAL --}}
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProductModalLabel">Create Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createProductForm">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="product_type" class="form-label">Product Type</label>
+                            <input type="text" class="form-control" id="product_type" name="product_type" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="product_number" class="form-label">Product Number</label>
+                            <input type="text" class="form-control" id="product_number" name="product_number" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="serial_number" class="form-label">Serial Number</label>
+                            <input type="text" class="form-control" id="serial_number" name="serial_number" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="brand" class="form-label">Brand</label>
+                            <input type="text" class="form-control" id="brand" name="brand" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="date_acquired" class="form-label">Date Acquired</label>
+                            <input type="date" class="form-control" id="date_acquired" name="date_acquired" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Price</label>
+                            <input type="number" class="form-control" id="price" name="price" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="office_location" class="form-label">Office Location</label>
+                            <input type="text" class="form-control" id="office_location" name="office_location" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="issued_to" class="form-label">Issued To</label>
+                            <input type="text" class="form-control" id="issued_to" name="issued_to" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="end_user" class="form-label">End User</label>
+                            <input type="text" class="form-control" id="end_user" name="end_user" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create Product</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- EDIT PRODUCT MODAL -->
+    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="editProductForm">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" id="edit-product-id">
 
-<!-- Include scripts only once -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css">
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.colVis.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-<script src="https://cdn.datatables.net/2.3.0/js/dataTables.min.js"></script>
+                        <div class="mb-3">
+                            <label for="edit-product-type" class="form-label">Product Type</label>
+                            <input type="text" class="form-control" id="edit-product-type" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-product-number" class="form-label">Product Number</label>
+                            <input type="text" class="form-control" id="edit-product-number" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-serial-number" class="form-label">Serial Number</label>
+                            <input type="text" class="form-control" id="edit-serial-number" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-brand" class="form-label">Brand</label>
+                            <input type="text" class="form-control" id="edit-brand" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-date-acquired" class="form-label">Date Acquired</label>
+                            <input type="date" class="form-control" id="edit-date-acquired" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-price" class="form-label">Price</label>
+                            <input type="number" class="form-control" id="edit-price" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-office-location" class="form-label">Office Location</label>
+                            <input type="text" class="form-control" id="edit-office-location" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-issued-to" class="form-label">Issued To</label>
+                            <input type="text" class="form-control" id="edit-issued-to" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-end-user" class="form-label">End User</label>
+                            <input type="text" class="form-control" id="edit-end-user" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update Product</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+@endsection
+
+@push('scripts')
 <script>
-  
     $(document).ready(function () {
-        let domSetup =  "<'row'<'col-sm-12 col-md-8'B><'col-sm-12 col-md-4'f>>" +
-                        "<'row'<'col-sm-12'tr>>" +
-                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>";
-
-        const A_LENGTH_MENU = [[10, 25, 50, 100, -1], ['10 rows', '25 rows', '50 rows', '100 rows', 'Show all']];
-
-        const TABLE_BUTTONS = [
-            {
-                text     : '<i class="bi bi-plus-lg"></i> Add',
-                className: 'btn btn-success',
-                action   : function () {
-                    let modal = new bootstrap.Modal(document.getElementById('addProduct'));
-                    modal.show();
-                }
-            },
-            {
-                extend   : 'copy',
-                text     : '<i class="bi bi-clipboard"></i> Copy',
-                className: 'btn btn-success'
-            },
-            {
-                extend   : 'excel',
-                text     : '<i class="bi bi-file-earmark-excel"></i> Excel',
-                className: 'btn btn-success'
-            },
-            {
-                extend   : 'csv',
-                text     : '<i class="bi bi-file-earmark-text"></i> CSV',
-                className: 'btn btn-success'
-            },
-            {
-                extend   : 'pdf',
-                text     : '<i class="bi bi-file-earmark-pdf"></i> PDF',
-                className: 'btn btn-success'
-            },
-            {
-                extend   : 'print',
-                text     : '<i class="bi bi-printer"></i> Print',
-                className: 'btn btn-success'
-            },
-            {
-                extend   : 'colvis',
-                text     : '<i class="fas fa-columns"></i> Column Visibility',
-                className: 'btn btn-success'
-            }
-        ];
-        // let table = new DataTable('#myTable');
-        $('#myDataTable').DataTable({
-            dom: domSetup,
-            // aLengthMenu: A_LENGTH_MENU,
-            buttons: TABLE_BUTTONS,
+        let table = $('#products-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "/products/data",  // Adjust the URL for your products endpoint
             responsive: true,
-            autoWidth: false
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    text: '<i class="bi bi-plus-lg"></i> Add',
+                    className: 'btn btn-success',
+                    action: function (e, dt, node, config) {
+                        $('#addProductModal').modal('show');
+                    }
+                },
+                {
+                    extend: 'copy',
+                    text: '<i class="bi bi-clipboard"></i> Copy',
+                    className: 'btn btn-success'
+                },
+                {
+                    extend: 'excel',
+                    text: '<i class="bi bi-file-earmark-excel"></i> Excel',
+                    className: 'btn btn-success'
+                },
+                {
+                    extend: 'csv',
+                    text: '<i class="bi bi-file-earmark-text"></i> CSV',
+                    className: 'btn btn-success'
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="bi bi-file-earmark-pdf"></i> PDF',
+                    className: 'btn btn-success'
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="bi bi-printer"></i> Print',
+                    className: 'btn btn-success'
+                }
+            ],
+            columns: [
+                { data: 'id', name: 'id' },
+                { data: 'product_type', name: 'product_type' },
+                { data: 'product_number', name: 'product_number' },
+                { data: 'serial_number', name: 'serial_number' },
+                { data: 'brand', name: 'brand' },
+                { data: 'date_acquired', name: 'date_acquired' },
+                { data: 'price', name: 'price' },
+                { data: 'office_location', name: 'office_location' },
+                { data: 'issued_to', name: 'issued_to' },
+                { data: 'end_user', name: 'end_user' },
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    render: function (data, type, row) {
+                        return `
+                            <button class="btn btn-warning btn-sm edit-product"
+                                    data-id="${row.id}"
+                                    data-product_type="${row.product_type}"
+                                    data-product_number="${row.product_number}"
+                                    data-serial_number="${row.serial_number}"
+                                    data-brand="${row.brand}"
+                                    data-date_acquired="${row.date_acquired}"
+                                    data-price="${row.price}"
+                                    data-office_location="${row.office_location}"
+                                    data-issued_to="${row.issued_to}"
+                                    data-end_user="${row.end_user}"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#editProductModal">
+                                    <i class="fas fa-pencil-alt"></i>
+                            </button>
+
+                            <button class="btn btn-danger btn-sm delete-product"
+                                    data-id="${row.id}">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        `;
+                    }
+                }
+            ]
+        });
+
+        // Create Product Form Submission
+        $('#createProductForm').on('submit', function (e) {
+            e.preventDefault();
+            let formData = $(this).serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('products.store') }}",
+                data: formData,
+                success: function (response) {
+                    Swal.fire('Success!', response.success, 'success');
+                    $('#addProductModal').modal('hide');
+                    $('#createProductForm')[0].reset();
+                    $('#products-table').DataTable().ajax.reload();
+                },
+                error: function (xhr) {
+                    let errors = xhr.responseJSON.errors;
+                    let errorMessage = Object.values(errors).join('<br>');
+                    Swal.fire('Error!', errorMessage, 'error');
+                }
+            });
+        });
+
+        // Open Edit Product Modal
+        $(document).on('click', '.edit-product', function() {
+            let productId = $(this).data('id');
+            let productType = $(this).data('product_type');
+            let productNumber = $(this).data('product_number');
+            let serialNumber = $(this).data('serial_number');
+            let brand = $(this).data('brand');
+            let dateAcquired = $(this).data('date_acquired');
+            let price = $(this).data('price');
+            let officeLocation = $(this).data('office_location');
+            let issuedTo = $(this).data('issued_to');
+            let endUser = $(this).data('end_user');
+
+            $('#edit-product-id').val(productId);
+            $('#edit-product-type').val(productType);
+            $('#edit-product-number').val(productNumber);
+            $('#edit-serial-number').val(serialNumber);
+            $('#edit-brand').val(brand);
+            $('#edit-date-acquired').val(dateAcquired);
+            $('#edit-price').val(price);
+            $('#edit-office-location').val(officeLocation);
+            $('#edit-issued-to').val(issuedTo);
+            $('#edit-end-user').val(endUser);
+        });
+
+        // Handle Update Form Submission
+        $('#editProductForm').submit(function(event) {
+            event.preventDefault();
+
+            let productId = $('#edit-product-id').val();
+            let productType = $('#edit-product-type').val();
+            let productNumber = $('#edit-product-number').val();
+            let serialNumber = $('#edit-serial-number').val();
+            let brand = $('#edit-brand').val();
+            let dateAcquired = $('#edit-date-acquired').val();
+            let price = $('#edit-price').val();
+            let officeLocation = $('#edit-office-location').val();
+            let issuedTo = $('#edit-issued-to').val();
+            let endUser = $('#edit-end-user').val();
+
+            $.ajax({
+                url: '{{ url("products/update") }}/' + productId,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    product_type: productType,
+                    product_number: productNumber,
+                    serial_number: serialNumber,
+                    brand: brand,
+                    date_acquired: dateAcquired,
+                    price: price,
+                    office_location: officeLocation,
+                    issued_to: issuedTo,
+                    end_user: endUser
+                },
+                success: function(response) {
+                    Swal.fire('Success!', response.success, 'success');
+                    $('#editProductModal').modal('hide');
+                    $('#products-table').DataTable().ajax.reload();
+                },
+                error: function(xhr) {
+                    Swal.fire('Error!', xhr.responseJSON.message, 'error');
+                }
+            });
         });
     });
-
-@if(session('success'))
-Swal.fire({
-    icon: 'success',
-    title: 'Success',
-    text: '{{ session("success") }}',
-    confirmButtonColor: '#198754'
-});
-@endif
-
-
-$(document).ready(function () {
-  $('#add_employee_form').on('submit', function (e) {
-    e.preventDefault(); // Prevent default form submission
-
-    let formData = new FormData(this);
-
-    $.ajax({
-      url: $(this).attr('action'),
-      method: $(this).attr('method'),
-      data: formData,
-      contentType: false,
-      processData: false,
-      success: function (response) {
-        // Optional: reset form or hide modal
-        $('#add_employee_form')[0].reset();
-        $('.modal').modal('hide');
-
-        // Do something with the response
-        console.log('Product added:', response);
-
-        // Example: append the new product to a table
-        // $('#product_table').append(`<tr><td>${response.product_type}</td><td>${response.product_number}</td></tr>`);
-      },
-      error: function (xhr) {
-        console.log('Error:', xhr.responseText);
-        alert('Something went wrong. Please check the form.');
-      }
-    });
-  });
-});
-
-
-
 </script>
-@endsection
+@endpush

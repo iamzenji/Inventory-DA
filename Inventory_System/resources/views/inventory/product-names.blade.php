@@ -185,6 +185,38 @@ $(document).ready(function () {
         });
     });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
     // Delete product button click
     $(document).on('click', '.deleteBtn', function () {
         if (confirm('Are you sure?')) {

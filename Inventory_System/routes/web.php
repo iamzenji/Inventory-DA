@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
@@ -18,6 +19,10 @@ use App\Http\Controllers\TryController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/', function () {
+    return view('inventory.dashboard');
+})->name('home');
+
 
 Route::get('/hello-ajax', function () {
     return response()->json('Hello from backend!');
@@ -67,7 +72,6 @@ Route::group(['middleware' => ['auth', 'role:admin|user']], function(){
 
     // PRODUCT LIST
     // Route::resource('product-names', ProductController::class);
-    
 
     //  Route::get('/bbb', [TryController::class, 'index']);
     //  Route::post('/store', [TryController::class, 'store'])->name('store');
@@ -77,19 +81,32 @@ Route::group(['middleware' => ['auth', 'role:admin|user']], function(){
     //  Route::post('/update', [TryController::class, 'update'])->name('update');
 
 
+
+
 });
-    Route::delete('/product-names/{product}', [ProductController::class, 'destroy'])->name('product-names.destroy');
 
-    Route::post('/get-users-data', [UserController::class, 'getUsersData'])->name('users.data');
-    Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
+    // USER ACCOUNT
+    Route::get('/account', [UserController::class, 'account'])->name('account');
+    Route::get('/accounts/data', [UserController::class, 'getUsersData'])->name('accounts.data');
+    Route::post('/accounts/update/{id}', [UserController::class, 'updateUser'])->name('accounts.update');
+    Route::delete('/accounts/delete/{id}', [UserController::class, 'deleteUser'])->name('accounts.delete');
+    Route::get('/roles', [UserController::class, 'getRoles']);
+    Route::post('/assign-role', [UserController::class, 'createRoles'])->name('assign.role');
+    Route::post('/accounts/register', [UserController::class, 'store'])->name('accounts.register');
 
-// PRODUCT LIST
-    Route::resource('product-names', ProductController::class);
-    Route::get('/product-names', [ProductController::class, 'index'])->name('product-names.index');
-    Route::post('/product-names', [ProductController::class, 'store'])->name('product-names.store');
-    Route::put('/product-names/{product}', [ProductController::class, 'update'])->name('product-names.update');
-    
+    // ROLES MANAGEMENT
+    Route::get('/role-management', [UserController::class, 'roles'])->name('roles.display');
+    Route::prefix('roles')->name('roles.')->group(function () {
+    Route::get('/role-manage', [RoleController::class, 'index'])->name('index');
+    Route::get('/data', [RoleController::class, 'fetchRoles'])->name('data');
+    Route::post('/role-data', [RoleController::class, 'store'])->name('store');
+    Route::put('/update/{id}', [RoleController::class, 'update'])->name('update');
+    Route::delete('/{id}', [RoleController::class, 'destroy'])->name('delete');
+    });
 
+    // PRODUCT LIST
+    Route::resource('products', ProductController::class);
+    Route::get('products/data', [ProductController::class, 'getData'])->name('products.data');
 
     // Route::get('/admin/index', [AdminController::class, 'index'])->name('admin.index');
     // Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store');
@@ -125,8 +142,8 @@ Route::group(['middleware' => ['auth', 'role:admin|user']], function(){
     //  Route::delete('/delete-sample', [SampleController::class, 'delete'])->name('sample.delete');
     //  Route::get('/edit-sample', [SampleController::class, 'edit'])->name('sample.edit');
     //  Route::post('/update-sample', [SampleController::class, 'update'])->name('sample.update');
-    Route::get('/product-names', [ProductController::class, 'index'])->name('product-names.index');
-    Route::post('/product-names', [ProductController::class, 'store'])->name('product-names.store');
-    Route::get('/fetchall', [ProductController::class, 'fetchAll'])->name('fetchAll');
-    Route::put('/product-names/{product}', [ProductController::class, 'update'])->name('product-names.update');
-    Route::delete('/product-names', [ProductController::class, 'delete'])->name('product-names.destroy');
+    // Route::get('/product-names', [ProductController::class, 'index'])->name('product-names.index');
+    // Route::post('/product-names', [ProductController::class, 'store'])->name('product-names.store');
+    // Route::get('/fetchall', [ProductController::class, 'fetchAll'])->name('fetchAll');
+    // Route::put('/product-names/{product}', [ProductController::class, 'update'])->name('product-names.update');
+    // Route::delete('/product-names', [ProductController::class, 'delete'])->name('product-names.destroy');

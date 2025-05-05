@@ -4,88 +4,54 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Display all products
     public function index()
     {
-        return $this->fetchAll();
-    }
-    public function fetchAll() {
-		$product = Product::all();
-        return view ('inventory/product', ['products'=>$product]);
-	}
-    public function create()
-    {
-        //
+        return view('inventory.product');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Get product data for DataTables (AJAX)
+    public function getData(Request $request)
+    {
+        $products = Product::query();
+
+        return datatables()->of($products)
+            ->addColumn('action', function ($product) {
+                return view('inventory.product-actions', compact('product'))->render();
+            })
+            ->make(true);
+    }
+
+    // Store a new product
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'product_type' => 'required|string',
-            'product_number' => 'required|string',
-            'serial_number' => 'required|string',
-            'brand' => 'required|string',
+        $request->validate([
+            'product_type' => 'required',
+            'product_number' => 'required',
+            'serial_number' => 'required',
+            'brand' => 'required',
             'date_acquired' => 'required|date',
-            'price' => 'required|string',
-            'office_location' => 'required|string',
-            'issued_to' => 'required|string',
-            'end_user' => 'required|string',
+            'price' => 'required|numeric',
+            'office_location' => 'required',
+            'issued_to' => 'required',
+            'end_user' => 'required',
         ]);
 
-        Product::create($validated);
+        Product::create($request->all());  // Create a new product using the data from the form
 
-        return redirect()->back()->with('success', 'Product added successfully!');
+        return response()->json(['success' => 'Product added successfully!']);
     }
 
+    // Edit and update product
+    public function update(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
 
+        $product->update($request->all());
 
-    public function edit(Request $request) {
-		$id = $request->id;
-		$emp = Product::find($id);
-		return response()->json($emp);
-	}
-	// handle update an employee ajax request
-	public function update(Request $request) {
-		$fileName = '';
-		$emp = Product::find($request->emp_id);
-		if ($request->hasFile('avatar')) {
-			$file = $request->file('avatar');
-			$fileName = time() . '.' . $file->getClientOriginalExtension();
-			$file->storeAs('public/images', $fileName);
-			if ($emp->avatar) {
-				Storage::delete('public/images/' . $emp->avatar);
-			}
-		} else {
-			$fileName = $request->emp_avatar;
-		}
-		$empData = ['first_name' => $request->fname, 'last_name' => $request->lname, 'email' => $request->email, 'phone' => $request->phone, 'post' => $request->post, 'avatar' => $fileName];
-		$emp->update($empData);
-		return response()->json([
-			'status' => 200,
-		]);
-	}
-	// handle delete an employee ajax request
-	public function delete(Request $request) {
-		$id = $request->id;
-		$emp = Product::find($id);
-
-		if ($emp) {
-			if ($emp->avatar && Storage::exists('public/images/' . $emp->avatar)) {
-				Storage::delete('public/images/' . $emp->avatar);
-			}
-			$emp->delete();
-			return response()->json(['status' => 200, 'message' => 'Employee deleted successfully']);
-		} else {
-			return response()->json(['status' => 404, 'message' => 'Employee not found']);
-		}
-	}
+        return response()->json(['success' => 'Product updated successfully!']);
+    }
 }

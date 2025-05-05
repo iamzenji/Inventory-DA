@@ -1,95 +1,115 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Hash;
-use App\Models\Role;
+
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\Facades\DataTables;
+use DataTables;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
+
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $users = User::get();
-        $roles =  Role::get();
-        return view('inventory.account',['users'=>  $users,'roles'=>$roles ]);
+        return redirect()->route('account');
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function account()
     {
-        return view('admin.create');
+        $roles = Role::all();
+        return view('inventory.account', compact('roles'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // USER DATA
+    public function getUsersData()
+    {
+        $users = User::with('roles')->select('id', 'name', 'email', 'created_at');
+
+        return FacadesDataTables::of($users)
+            ->addColumn('role', function ($user) {
+                return $user->roles->pluck('name')->implode(', ');
+            })
+            ->make(true);
+    }
+
+    // UPDATE USER
+    public function updateUser(Request $request, $id)
+    {
+        try {
+            Log::info('Update Request Data: ', $request->all());
+
+            $user = User::findOrFail($id);
+
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+            ]);
+
+            if ($request->role) {
+                $role = Role::find($request->role);
+                if (!$role) {
+                    Log::error('Role not found: ' . $request->role);
+                    return response()->json(['error' => 'Role not found'], 400);
+                }
+
+                $user->roles()->sync([
+                    $role->id => ['user_type' => 'App\Models\User']
+                ]);
+
+                Log::info('Role updated to: ' . $role->name);
+            }
+
+            return response()->json(['success' => 'User updated successfully']);
+        } catch (\Exception $e) {
+            Log::error('Update Error: ' . $e->getMessage());
+            return response()->json(['error' => 'Update failed', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    // DELETE USER
+    public function deleteUser($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return response()->json(['success' => 'User deleted successfully']);
+    }
+
+    // FETCH ROLE
+    public function getRoles()
+    {
+        return response()->json(['roles' => Role::all()]);
+    }
+
+    // CREATE DATA
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'role' => 'required|string'
+        $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'role'     => 'required|integer|exists:roles,id',
         ]);
-    
-        $validated['password'] = Hash::make('defaultpassword123'); // or generate a secure one
-    
-        User::create($validated);
-    
-        return response()->json(['message' => 'User created successfully.']);
+
+        $user = User::create([
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        // Attach role
+        $user->attachRole($request->role);
+
+        return response()->json(['success' => 'User registered successfully!']);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // ROLE
+    public function roles()
     {
-        //
+        return view('inventory.role');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-
-    public function getUsersData(Request $request)
-{
-    $users = User::select(['id', 'name', 'email', 'role']);
-    
-    return DataTables::of($users)
-        ->addColumn('action', function ($user) {
-            return '
-                <div class="d-flex gap-2">
-                    <button class="btn btn-sm btn-warning editBtn"><i class="bi bi-pencil"></i></button>
-                    <button class="btn btn-sm btn-danger deleteBtn"><i class="bi bi-trash"></i></button>
-                </div>';
-        })
-        ->rawColumns(['action'])
-        ->make(true);
-}
 
 }
