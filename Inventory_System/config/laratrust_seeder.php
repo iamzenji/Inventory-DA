@@ -20,6 +20,9 @@ return [
         'user' => [
             'profile' => 'r,u',
         ],
+        'viewer' => [
+            'profile' => 'r',
+        ],
     ],
 
     'permissions_map' => [

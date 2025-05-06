@@ -59,7 +59,7 @@
                                 <label for="role" class="form-label">Account Type</label>
                                 <select class="form-control" id="role" name="role" required>
                                     @foreach(App\Models\Role::all() as $role)
-                                        @if($role->id != 1)
+                                        @if($role->id)
                                             <option value="{{ $role->id }}">{{ $role->name }}</option>
                                         @endif
                                     @endforeach
