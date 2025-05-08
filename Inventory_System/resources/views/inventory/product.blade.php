@@ -102,9 +102,9 @@
                     <h5 class="modal-title">Edit Product</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form id="editProductForm">
-                    @csrf
-                    <div class="modal-body">
+                <div class="modal-body">
+                    <form id="editProductForm">
+                        @csrf
                         <input type="hidden" id="edit-product-id">
 
                         <div class="mb-3">
@@ -151,12 +151,13 @@
                             <label for="edit-end-user" class="form-label">End User</label>
                             <input type="text" class="form-control" id="edit-end-user" required>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Update Product</button>
-                    </div>
-                </form>
+               
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Update Product</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -169,7 +170,7 @@
         let table = $('#products-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "/products/data",  // Adjust the URL for your products endpoint
+            ajax: "/products/data",
             responsive: true,
             dom: 'Bfrtip',
             buttons: [
@@ -207,7 +208,13 @@
                 }
             ],
             columns: [
-                { data: 'id', name: 'id' },
+                {
+                    data: null,
+                    name: 'id',
+                    render: function (data, type, row, meta) {
+                        return meta.row + 1;  // meta.row gives you the index of the row, starting from 0
+                    }
+                },
                 { data: 'product_type', name: 'product_type' },
                 { data: 'product_number', name: 'product_number' },
                 { data: 'serial_number', name: 'serial_number' },
@@ -239,7 +246,8 @@
                                     <i class="fas fa-pencil-alt"></i>
                             </button>
 
-                            <button class="btn btn-danger btn-sm delete-product"
+
+                            <button class="btn btn-danger btn-sm delete-user"
                                     data-id="${row.id}">
                                 <i class="bi bi-trash"></i>
                             </button>
@@ -248,7 +256,6 @@
                 }
             ]
         });
-
         // Create Product Form Submission
         $('#createProductForm').on('submit', function (e) {
             e.preventDefault();
@@ -330,6 +337,7 @@
                 success: function(response) {
                     Swal.fire('Success!', response.success, 'success');
                     $('#editProductModal').modal('hide');
+                    console.log("relode");
                     $('#products-table').DataTable().ajax.reload();
                 },
                 error: function(xhr) {
@@ -337,6 +345,40 @@
                 }
             });
         });
+
+        // Handle Delete Button Click
+        $(document).on('click', '.delete-user', function() {
+            let userId = $(this).data('id');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This action cannot be undone!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ url("products/delete") }}/' + userId,
+                        type: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: response.success
+                            });
+                            table.ajax.reload();
+                        }
+                    });
+                }
+            });
+        });
     });
+
 </script>
 @endpush

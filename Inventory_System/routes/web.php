@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SampleController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TryController;
 
 /*
@@ -72,17 +73,12 @@ Route::group(['middleware' => ['auth', 'role:admin|user']], function(){
 
     // PRODUCT LIST
     // Route::resource('product-names', ProductController::class);
-
     //  Route::get('/bbb', [TryController::class, 'index']);
     //  Route::post('/store', [TryController::class, 'store'])->name('store');
     //  Route::get('/fetchall', [TryController::class, 'fetchAll'])->name('fetchAll');
     //  Route::post('/delete', [TryController::class, 'delete'])->name('delete');
     //  Route::get('/edit', [TryController::class, 'edit'])->name('edit');
     //  Route::post('/update', [TryController::class, 'update'])->name('update');
-
-
-
-
 });
 
     // USER ACCOUNT
@@ -105,8 +101,17 @@ Route::group(['middleware' => ['auth', 'role:admin|user']], function(){
     });
 
     // PRODUCT LIST
-    Route::resource('products', ProductController::class);
-    Route::get('products/data', [ProductController::class, 'getData'])->name('products.data');
+    // Route::resource('products', ProductController::class);
+    Route::get('/products/data', [ProductController::class, 'getData'])->name('products.data');
+    Route::post('/products/store', [ProductController::class, 'store'])->name('products.store');
+    Route::delete('/products/delete/{id}', [ProductController::class, 'deleteProduct'])->name('products.delete');
+    Route::post('/products/update/{id}', [ProductController::class, 'updateProduct'])->name('products.update');
+
+    // Supplies LIST
+    Route::get('/supplier/data', [SupplierController::class, 'getData'])->name('supplier.data');
+    Route::post('/supplier/store', [SupplierController::class, 'store'])->name('supplier.store');
+    Route::delete('/supplier/delete/{id}', [SupplierController::class, 'deleteSupplier'])->name('supplier.delete');
+    Route::post('/supplier/update/{id}', [SupplierController::class, 'updateSupplier'])->name('supplier.update');
 
     // Route::get('/admin/index', [AdminController::class, 'index'])->name('admin.index');
     // Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store');
@@ -117,9 +122,6 @@ Route::group(['middleware' => ['auth', 'role:admin|user']], function(){
     // Route::get('/admin/create', [AdminController::class, 'create'])->name('admin.create');
     // Route::post('/admin', [AdminController::class, 'store'])->name('admin.store');
     // Route::get('/roles/{id}', [RoleController::class, 'show'])->name('roles.show');
-
-
-
 
     // Route::get('/product', [ProductController::class, 'index']);
     // Route::post('/store', [ProductController::class, 'store'])->name('store');

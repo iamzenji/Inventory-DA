@@ -65,7 +65,7 @@
 <body>
     <div id="app">
         @if (!request()->is('login') && !request()->is('register') && !request()->is('password/*'))
-         @include('layouts.sidebar')
+            @include('layouts.sidebar')
         @endif
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">

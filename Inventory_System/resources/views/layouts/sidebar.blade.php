@@ -20,7 +20,7 @@
     </li>
     <li class="nav-item">
         <a class="nav-link active" href="{{ route('inventory.supplier') }}">
-        <i class="bi-boxes"></i> <span>Supplies</span>
+        <i class="bi-boxes"></i> <span>Supplier</span>
         </a>
     </li>
     <li class="nav-item">

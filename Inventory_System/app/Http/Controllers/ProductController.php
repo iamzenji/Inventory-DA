@@ -1,27 +1,22 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Yajra\DataTables\Facades\DataTables;
 use App\Models\Product;
 use Illuminate\Http\Request;
-
+use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
 class ProductController extends Controller
 {
-    // Display all products
     public function index()
     {
         return view('inventory.product');
     }
 
-    // Get product data for DataTables (AJAX)
     public function getData(Request $request)
     {
-        $products = Product::query();
+    $products = Product::query()->get();
 
-        return datatables()->of($products)
-            ->addColumn('action', function ($product) {
-                return view('inventory.product-actions', compact('product'))->render();
-            })
+        return DataTables::of($products)
             ->make(true);
     }
 
@@ -46,7 +41,7 @@ class ProductController extends Controller
     }
 
     // Edit and update product
-    public function update(Request $request, $id)
+    public function updateProduct(Request $request, $id)
     {
         $product = Product::findOrFail($id);
 
@@ -54,4 +49,12 @@ class ProductController extends Controller
 
         return response()->json(['success' => 'Product updated successfully!']);
     }
+    public function deleteProduct($id)
+    {
+        $product = Product::findOrFail($id);
+        $product->delete();
+
+        return response()->json(['success' => 'User deleted successfully']);
+    }
+
 }
