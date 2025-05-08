@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('supplier_email')->unique();
             $table->string('supplier_number');
             $table->string('supplier_website')->nullable();
-            $table->timestamps('supplier_tin');
+            $table->string('tin');
+            $table->timestamps();
         });
     }
 
