@@ -1,17 +1,18 @@
 @extends('layouts.app')
 @section('content')
 
+
 <div class="container">
     {{-- Breadcrumb Navigation --}}
     <div class="row align-items-center mb-3">
         <div class="col-md-6">
-            <h2 class="fw-bold text-success"> Register Supplies</h2>
+            <h2 class="fw-bold text-success"> Register Supplier</h2>
         </div>
         <div class="col-md-6 text-md-end">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb justify-content-md-end">
                     <li class="breadcrumb-item"><a href="{{ route('home') }}" class="text-decoration-none text-success">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Registered Products</li>
+                    <li class="breadcrumb-item active" aria-current="page">Registered Supplier</li>
                 </ol>
             </nav>
         </div>
@@ -19,9 +20,10 @@
 
     {{-- TABLE --}}
     <div class="table-responsive" style="border: 1px solid #ddd; border-radius: 10px; padding: 10px; border-collapse: separate; border-spacing: 0;">
-        <table id="Supplier-table" class="table table-striped">
+        <table id="supplier-table" class="table table-striped">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Supplier Name</th>
                     <th>Address</th>
                     <th>Email</th>
@@ -60,8 +62,8 @@
                         <input type="email" class="form-control" id="supplier_email" name="supplier_email" required>
                     </div>
                     <div class="mb-3">
-                        <label for="contact_number" class="form-label">Contact Number</label>
-                        <input type="number" class="form-control" id="contact_number" name="contact_number" required>
+                        <label for="supplier_number" class="form-label">Contact Number</label>
+                        <input type="number" class="form-control" id="supplier_number" name="supplier_number" required>
                     </div>
                     <div class="mb-3">
                         <label for="contact_person" class="form-label">Contact Person</label>
@@ -69,7 +71,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="website" class="form-label">Website</label>
-                        <input type="text" class="form-control" id="website" name="website" required>
+                        <input type="text" class="form-control" id="supplier_website" name="website" required>
                     </div>
                     <div class="mb-3">
                         <label for="supplier_tin" class="form-label">Tin</label>
@@ -145,7 +147,7 @@
 @push('scripts')
 <script>
     $(document).ready(function () {
-        let table = $('#Supplier-table').DataTable({
+        let table = $('#supplier-table').DataTable({
             processing: true,
             serverSide: true,
             ajax: "/supplier/data",
@@ -196,9 +198,9 @@
                 { data: 'supplier_name', name: 'supplier_name' },
                 { data: 'supplier_address', name: 'supplier_address' },
                 { data: 'supplier_email', name: 'supplier_email' },
-                { data: 'contact_number', name: 'contact_number' },
+                { data: 'supplier_number', name: 'supplier_number' },
                 { data: 'contact_person', name: 'contact_person' },
-                { data: 'website', name: 'website' },
+                { data: 'supplier_website', name: 'supplier_website' },
                 { data: 'tin', name: 'tin' },
                 {
                     data: null,
@@ -211,9 +213,9 @@
                                     data-supplier_name="${row.supplier_name}"
                                     data-supplier_address="${row.supplier_address}"
                                     data-supplier_email="${row.supplier_email}"
-                                    data-contact_number="${row.contact_number}"
+                                    data-supplier_number="${row.supplier_number}"
                                     data-contact_person="${row.contact_person}"
-                                    data-website="${row.website}"
+                                    data-supplier_website="${row.website}"
                                     data-tin="${row.tin}"
                                     data-bs-toggle="modal"
                                     data-bs-target="#editSupplierModal">
@@ -242,7 +244,7 @@
                     Swal.fire('Success!', response.success, 'success');
                     $('#addSupplierModal').modal('hide');
                     $('#createSupplierForm')[0].reset();
-                    $('#Supplier-table').DataTable().ajax.reload();
+                    $('#supplier-table').DataTable().ajax.reload();
                 },
                 error: function (xhr) {
                     let errors = xhr.responseJSON.errors;
@@ -252,15 +254,15 @@
             });
         });
 
-        // Open Edit Product Modal
-        $(document).on('click', '.edit-supplies', function() {
+        // Open Edit Supplier Modal
+        $(document).on('click', '.edit-supplier', function() {
             let supplierId = $(this).data('id');
             let supplierName = $(this).data('supplier_name');
             let supplierAddress = $(this).data('supplier_address');
             let supplierEmail = $(this).data('supplier_email');
-            let contactNumber = $(this).data('contact_number');
+            let contactNumber = $(this).data('supplier_number');
             let contactPerson = $(this).data('contact_person');
-            let website = $(this).data('website');
+            let website = $(this).data('supplier_website');
             let tin = $(this).data('tin');
 
             $('#edit-supplier-id').val(supplierId);
@@ -294,7 +296,7 @@
                     supplier_name: supplierName,
                     supplier_address: supplierAddress,
                     supplier_email: supplierEmail,
-                    supplier_number: contactNumber,
+                    supplier_number: contactNumber, 
                     supplier_contact: contactPerson,
                     website: website,
                     tin: tin,
@@ -302,7 +304,7 @@
                 success: function(response) {
                     Swal.fire('Success!', response.success, 'success');
                     $('#editSupplierModal').modal('hide');
-                    $('#Supplier-table').DataTable().ajax.reload();
+                    $('#supplier-table').DataTable().ajax.reload();
                 },
                 error: function(xhr) {
                     Swal.fire('Error!', xhr.responseJSON.message, 'error');

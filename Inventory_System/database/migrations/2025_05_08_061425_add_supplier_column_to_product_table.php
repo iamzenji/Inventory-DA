@@ -12,12 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->tinyInteger('supplier_id')->nullable()->after('end_user');
+            $table->unsignedBigInteger('supplier_id')->nullable()->after('end_user');
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('restrict');
-
         });
     }
-
     /**
      * Reverse the migrations.
      */
