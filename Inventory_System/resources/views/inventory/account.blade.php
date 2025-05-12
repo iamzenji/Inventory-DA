@@ -3,7 +3,6 @@
 @section('content')
     {{-- DISPLAY DATA --}}
     <div class="container">
-    {{-- Breadcrumb Navigation --}}
         <div class="row align-items-center mb-3">
             <div class="col-md-6">
                 <h2 class="fw-bold text-success">Registered Accounts</h2>

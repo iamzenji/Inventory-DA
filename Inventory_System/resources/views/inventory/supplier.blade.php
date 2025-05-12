@@ -2,7 +2,6 @@
 @section('content')
 
 <div class="container">
-    {{-- Breadcrumb Navigation --}}
     <div class="row align-items-center mb-3">
         <div class="col-md-6">
             <h2 class="fw-bold text-success"> Register Supplier</h2>
@@ -141,7 +140,7 @@ $(document).ready(function () {
     let table = $('#supplier-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "/supplier/data", // URL to get data
+        ajax: "/supplier/data",
         responsive: true,
         dom: 'Bfrtip',
         buttons: [
