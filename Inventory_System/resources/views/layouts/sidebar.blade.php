@@ -36,9 +36,9 @@
         <li><a class="nav-link" href="#">None</a></li>
         </ul>
     </li>
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <a class="nav-link" href="#"><i class="#"></i> <span>Log out</span></a>
-    </li>
+    </li> --}}
     </ul>
 </div>
 </div>

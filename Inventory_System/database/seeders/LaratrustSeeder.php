@@ -2,10 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Hash;
 
 class LaratrustSeeder extends Seeder
 {
@@ -72,6 +74,15 @@ class LaratrustSeeder extends Seeder
             }
 
         }
+        $admin = User::firstOrCreate(
+            ['email' => env('ADMIN_EMAIL')],
+            [
+                'name' => env('ADMIN_NAME'),
+                'password' => Hash::make(env('ADMIN_PASSWORD'))
+            ]
+        );
+        // Attach the admin role
+        $admin->attachRole('admin');
     }
 
     /**
@@ -91,7 +102,7 @@ class LaratrustSeeder extends Seeder
         if (Config::get('laratrust_seeder.truncate_tables')) {
             DB::table('roles')->truncate();
             DB::table('permissions')->truncate();
-            
+
             if (Config::get('laratrust_seeder.create_users')) {
                 $usersTable = (new \App\Models\User)->getTable();
                 DB::table($usersTable)->truncate();

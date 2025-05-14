@@ -21,13 +21,9 @@ use App\Http\Controllers\TryController;
 |
 */
 Route::get('/', function () {
-    return view('inventory.dashboard');
-})->name('home');
+    return view('auth.login');
+})->name('login');
 
-
-Route::get('/hello-ajax', function () {
-    return response()->json('Hello from backend!');
-})->name('hello.ajax');
 
 
 // route to product page
@@ -122,30 +118,3 @@ Route::group(['middleware' => ['auth', 'role:admin|user']], function(){
     // Route::get('/admin/create', [AdminController::class, 'create'])->name('admin.create');
     // Route::post('/admin', [AdminController::class, 'store'])->name('admin.store');
     // Route::get('/roles/{id}', [RoleController::class, 'show'])->name('roles.show');
-
-    // Route::get('/product', [ProductController::class, 'index']);
-    // Route::post('/store', [ProductController::class, 'store'])->name('store');
-    // Route::get('/fetchall', [ProductController::class, 'fetchAll'])->name('fetchAll');
-    // Route::delete('/delete', [ProductController::class, 'delete'])->name('delete');
-    // Route::get('/edit', [ProductController::class, 'edit'])->name('edit');
-    // Route::post('/update', [ProductController::class, 'update'])->name('update');
-
-     // TRY ROUTES
-    //  Route::get('/bbb', [TryController::class, 'index']);
-    //  Route::post('/store', [TryController::class, 'store'])->name('store');
-    //  Route::get('/fetchall', [TryController::class, 'fetchAll'])->name('fetchAll');
-    //  Route::post('/delete', [TryController::class, 'delete'])->name('delete');
-    //  Route::get('/edit', [TryController::class, 'edit'])->name('edit');
-    //  Route::post('/update', [TryController::class, 'update'])->name('update');
-
-    //  Route::get('/aaa', [SampleController::class, 'index']);
-    //  Route::post('/store-sample', [SampleController::class, 'store'])->name('sample.store');
-    //  Route::get('/fetchall-sample', [SampleController::class, 'fetchAll'])->name('sample.fetchAll');
-    //  Route::delete('/delete-sample', [SampleController::class, 'delete'])->name('sample.delete');
-    //  Route::get('/edit-sample', [SampleController::class, 'edit'])->name('sample.edit');
-    //  Route::post('/update-sample', [SampleController::class, 'update'])->name('sample.update');
-    // Route::get('/product-names', [ProductController::class, 'index'])->name('product-names.index');
-    // Route::post('/product-names', [ProductController::class, 'store'])->name('product-names.store');
-    // Route::get('/fetchall', [ProductController::class, 'fetchAll'])->name('fetchAll');
-    // Route::put('/product-names/{product}', [ProductController::class, 'update'])->name('product-names.update');
-    // Route::delete('/product-names', [ProductController::class, 'delete'])->name('product-names.destroy');

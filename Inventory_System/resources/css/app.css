@@ -1,95 +1,97 @@
 body {
-margin: 0;
-padding: 0;
-overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
 
 .sidebar {
-position: fixed;
-top: 0;
-left: 0;
-height: 100%;
-background-color: #0d0c22;
-color: white;
-width: 250px;
-transition: width 0.3s ease;
-display: flex;
-flex-direction: column;
-justify-content: space-between;
-z-index: 1000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #0d0c22;
+    color: white;
+    width: 250px;
+    transition: width 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 1000;
 }
 
 .sidebar.collapsed {
-width: 70px;
+    width: 70px;
 }
+
 .sidebar .nav-link {
-color: white;
-padding: 10px 20px;
-display: flex;
-align-items: center;
-gap: 10px;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 .sidebar.collapsed .nav-link span {
-display: none;
+    display: none;
 }
+
 .toggle-btn {
-background: none;
-border: none;
-color: white;
-font-size: 1.5rem;
-margin: 1rem;
-align-self: flex-end;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    margin: 1rem;
+    align-self: flex-end;
 }
 .sidebar-footer {
-text-align: center;
-padding: 1rem;
+    text-align: center;
+    padding: 1rem;
 }
 .sidebar-footer img {
-border-radius: 50%;
-width: 40px;
+    border-radius: 50%;
+    width: 40px;
 }
 .sidebar-footer p {
-margin: 5px 0 0;
-font-size: 0.8rem;
+    margin: 5px 0 0;
+    font-size: 0.8rem;
 }
 .search-box {
-padding: 0 1rem;
-margin-bottom: 1rem;
+    padding: 0 1rem;
+    margin-bottom: 1rem;
 }
 .search-box input {
-background-color: #1d1b31;
-border: none;
-color: white;
+    background-color: #1d1b31;
+    border: none;
+    color: white;
 }
 .search-box input::placeholder {
-color: #aaa;
+    color: #aaa;
 }
 
 @media (min-width: 768px) {
-body {
-margin-left: 250px;
-transition: margin-left 0.3s ease;
-}
+    body {
+        margin-left: 250px;
+        transition: margin-left 0.3s ease;
+    }
 
-body.sidebar-collapsed {
-margin-left: 70px;
-}
+    body.sidebar-collapsed {
+        margin-left: 70px;
+    }
 }
 
 /* Sidebar collapses by default on small screens */
 @media (max-width: 767.98px) {
-.sidebar {
-transform: translateX(-100%);
-position: fixed;
-z-index: 1050;
-}
+    .sidebar {
+        transform: translateX(-100%);
+        position: fixed;
+        z-index: 1050;
+    }
 
 .sidebar.show {
-transform: translateX(0);
+    transform: translateX(0);
 }
 
 body {
-margin-left: 0 !important;
+    margin-left: 0 !important;
 }
 }
 /* for dashboard */
