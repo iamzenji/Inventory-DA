@@ -51,43 +51,47 @@
                 <div class="modal-body">
                     <form id="createProductForm">
                         @csrf
-                        <div class="mb-3">
-                            <label for="product_type" class="form-label">Product Type</label>
-                            <input type="text" class="form-control" id="product_type" name="product_type" required>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="product_type" class="form-label">Product Type</label>
+                                <input type="text" class="form-control" id="product_type" name="product_type" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="product_number" class="form-label">Product Number</label>
+                                <input type="text" class="form-control" id="product_number" name="product_number" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="serial_number" class="form-label">Serial Number</label>
+                                <input type="text" class="form-control" id="serial_number" name="serial_number" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="brand" class="form-label">Brand</label>
+                                <input type="text" class="form-control" id="brand" name="brand" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="date_acquired" class="form-label">Date Acquired</label>
+                                <input type="date" class="form-control" id="date_acquired" name="date_acquired" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="price" class="form-label">Price</label>
+                                <input type="number" class="form-control" id="price" name="price" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="office_location" class="form-label">Office Location</label>
+                                <input type="text" class="form-control" id="office_location" name="office_location" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="issued_to" class="form-label">Issued To</label>
+                                <input type="text" class="form-control" id="issued_to" name="issued_to" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="end_user" class="form-label">End User</label>
+                                <input type="text" class="form-control" id="end_user" name="end_user" required>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="product_number" class="form-label">Product Number</label>
-                            <input type="text" class="form-control" id="product_number" name="product_number" required>
+                        <div class="mt-3 text-end">
+                            <button type="submit" class="btn btn-primary">Create Product</button>
                         </div>
-                        <div class="mb-3">
-                            <label for="serial_number" class="form-label">Serial Number</label>
-                            <input type="text" class="form-control" id="serial_number" name="serial_number" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="brand" class="form-label">Brand</label>
-                            <input type="text" class="form-control" id="brand" name="brand" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="date_acquired" class="form-label">Date Acquired</label>
-                            <input type="date" class="form-control" id="date_acquired" name="date_acquired" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="price" class="form-label">Price</label>
-                            <input type="number" class="form-control" id="price" name="price" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="office_location" class="form-label">Office Location</label>
-                            <input type="text" class="form-control" id="office_location" name="office_location" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="issued_to" class="form-label">Issued To</label>
-                            <input type="text" class="form-control" id="issued_to" name="issued_to" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="end_user" class="form-label">End User</label>
-                            <input type="text" class="form-control" id="end_user" name="end_user" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Create Product</button>
                     </form>
                 </div>
             </div>
@@ -106,57 +110,51 @@
                     <form id="editProductForm">
                         @csrf
                         <input type="hidden" id="edit-product-id">
-
-                        <div class="mb-3">
-                            <label for="edit-product-type" class="form-label">Product Type</label>
-                            <input type="text" class="form-control" id="edit-product-type" required>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="edit-product-type" class="form-label">Product Type</label>
+                                <input type="text" class="form-control" id="edit-product-type" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit-product-number" class="form-label">Product Number</label>
+                                <input type="text" class="form-control" id="edit-product-number" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit-serial-number" class="form-label">Serial Number</label>
+                                <input type="text" class="form-control" id="edit-serial-number" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit-brand" class="form-label">Brand</label>
+                                <input type="text" class="form-control" id="edit-brand" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit-date-acquired" class="form-label">Date Acquired</label>
+                                <input type="date" class="form-control" id="edit-date-acquired" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit-price" class="form-label">Price</label>
+                                <input type="number" class="form-control" id="edit-price" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit-office-location" class="form-label">Office Location</label>
+                                <input type="text" class="form-control" id="edit-office-location" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit-issued-to" class="form-label">Issued To</label>
+                                <input type="text" class="form-control" id="edit-issued-to" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit-end-user" class="form-label">End User</label>
+                                <input type="text" class="form-control" id="edit-end-user" required>
+                            </div>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="edit-product-number" class="form-label">Product Number</label>
-                            <input type="text" class="form-control" id="edit-product-number" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="edit-serial-number" class="form-label">Serial Number</label>
-                            <input type="text" class="form-control" id="edit-serial-number" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="edit-brand" class="form-label">Brand</label>
-                            <input type="text" class="form-control" id="edit-brand" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="edit-date-acquired" class="form-label">Date Acquired</label>
-                            <input type="date" class="form-control" id="edit-date-acquired" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="edit-price" class="form-label">Price</label>
-                            <input type="number" class="form-control" id="edit-price" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="edit-office-location" class="form-label">Office Location</label>
-                            <input type="text" class="form-control" id="edit-office-location" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="edit-issued-to" class="form-label">Issued To</label>
-                            <input type="text" class="form-control" id="edit-issued-to" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="edit-end-user" class="form-label">End User</label>
-                            <input type="text" class="form-control" id="edit-end-user" required>
-                        </div>
-               
-                        <div class="modal-footer">
+                    
+                        <div class="modal-footer mt-3">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Update Product</button>
                         </div>
                     </form>
+                    
                 </div>
             </div>
         </div>
@@ -212,7 +210,7 @@
                     data: null,
                     name: 'id',
                     render: function (data, type, row, meta) {
-                        return meta.row + 1;  // meta.row gives you the index of the row, starting from 0
+                        return meta.row + 1;
                     }
                 },
                 { data: 'product_type', name: 'product_type' },

@@ -47,35 +47,39 @@
             <div class="modal-body">
                 <form id="createSupplierForm">
                     @csrf
-                    <div class="mb-3">
-                        <label for="supplier_name" class="form-label">Supplier Name</label>
-                        <input type="text" class="form-control" id="supplier_name" name="supplier_name" required>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="supplier_name" class="form-label">Supplier Name</label>
+                            <input type="text" class="form-control" id="supplier_name" name="supplier_name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="supplier_address" class="form-label">Address</label>
+                            <input type="text" class="form-control" id="supplier_address" name="supplier_address" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="supplier_email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="supplier_email" name="supplier_email" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="supplier_number" class="form-label">Contact Number</label>
+                            <input type="number" class="form-control" id="supplier_number" name="supplier_number" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="contact_person" class="form-label">Contact Person</label>
+                            <input type="text" class="form-control" id="contact_person" name="contact_person" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="supplier_website" class="form-label">Website</label>
+                            <input type="text" class="form-control" id="supplier_website" name="website" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="tin" class="form-label">TIN</label>
+                            <input type="text" class="form-control" id="tin" name="tin" required>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="supplier_address" class="form-label">Address</label>
-                        <input type="text" class="form-control" id="supplier_address" name="supplier_address" required>
+                    <div class="mt-3 text-end">
+                        <button type="submit" class="btn btn-primary">Add Supplier</button>
                     </div>
-                    <div class="mb-3">
-                        <label for="supplier_email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="supplier_email" name="supplier_email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="supplier_number" class="form-label">Contact Number</label>
-                        <input type="number" class="form-control" id="supplier_number" name="supplier_number" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="contact_person" class="form-label">Contact Person</label>
-                        <input type="text" class="form-control" id="contact_person" name="contact_person" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="supplier_website" class="form-label">Website</label>
-                        <input type="text" class="form-control" id="supplier_website" name="website" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="tin" class="form-label">Tin</label>
-                        <input type="text" class="form-control" id="tin" name="tin" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add Supplier</button>
                 </form>
             </div>
         </div>
@@ -94,33 +98,35 @@
                 @csrf
                 <div class="modal-body">
                     <input type="hidden" id="edit-supplier-id">
-                    <div class="mb-3">
-                        <label class="form-label">Supplier Name</label>
-                        <input type="text" class="form-control" id="edit-supplier-name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Supplier Address</label>
-                        <input type="text" class="form-control" id="edit-supplier-address" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Supplier Email</label>
-                        <input type="email" class="form-control" id="edit-supplier-email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Contact Number</label>
-                        <input type="number" class="form-control" id="edit-contact-number" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Contact Person</label>
-                        <input type="text" class="form-control" id="edit-contact-person" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Website</label>
-                        <input type="text" class="form-control" id="edit-website" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Tin</label>
-                        <input type="text" class="form-control" id="edit-tin" required>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Supplier Name</label>
+                            <input type="text" class="form-control" id="edit-supplier-name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Supplier Address</label>
+                            <input type="text" class="form-control" id="edit-supplier-address" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Supplier Email</label>
+                            <input type="email" class="form-control" id="edit-supplier-email" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Contact Number</label>
+                            <input type="number" class="form-control" id="edit-contact-number" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Contact Person</label>
+                            <input type="text" class="form-control" id="edit-contact-person" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Website</label>
+                            <input type="text" class="form-control" id="edit-website" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">TIN</label>
+                            <input type="text" class="form-control" id="edit-tin" required>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -167,7 +173,7 @@ $(document).ready(function () {
             { data: 'supplier_website' },
             { data: 'tin' },
             {
-                data: 'actions', // Use the actions column for edit/delete buttons
+                data: 'actions',
                 orderable: false,
                 searchable: false
             }

@@ -1,9 +1,52 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<style>
+    body {
+        background-color: #f4f6f9;
+    }
+    .login-container {
+        margin-top: 50px;
+    }
+    .card {
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+    }
+    .card-header {
+        background-color: #155724;
+        color: white;
+        font-weight: bold;
+        font-size: 20px;
+        text-align: center;
+    }
+    .gov-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .gov-header img.gov-badge {
+        height: 80px;
+        margin-bottom: 10px;
+    }
+    .gov-header h1 {
+        font-size: 26px;
+        margin: 0;
+        color: #155724;
+    }
+    .gov-header h5 {
+        margin-top: 5px;
+        color: #6c757d;
+    }
+</style>
+
+<div class="container login-container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            <div class="gov-header">
+                <img src="{{ asset('images/gov-logo.png') }}" class="gov-badge" alt="Government Logo">
+                <h1>Inventory System</h1>
+                <h5>Department of Agriculture III</h5>
+            </div>
+
             <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>
 
@@ -15,7 +58,9 @@
                             <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                <input id="email" type="email"
+                                       class="form-control @error('email') is-invalid @enderror"
+                                       name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -29,7 +74,9 @@
                             <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                <input id="password" type="password"
+                                       class="form-control @error('password') is-invalid @enderror"
+                                       name="password" required autocomplete="current-password">
 
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
@@ -42,7 +89,8 @@
                         <div class="row mb-3">
                             <div class="col-md-6 offset-md-4">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox"
+                                           name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
                                     <label class="form-check-label" for="remember">
                                         {{ __('Remember Me') }}
@@ -53,7 +101,7 @@
 
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-success px-4">
                                     {{ __('Login') }}
                                 </button>
 
