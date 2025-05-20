@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\DepartmentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
@@ -38,6 +39,14 @@ Route::get('/inventory/dashboard', function () {
 Route::get('/inventory/brand', function () {
     return view('inventory.brand');
 })->name('inventory.brand');
+
+Route::get('/inventory/product-names', function () {
+    return view('inventory.product-names');
+})->name('inventory.product-names');
+
+Route::get('/inventory/department', function () {
+    return view('inventory.department');
+})->name('inventory.department');
 
 Route::get('/inventory/product-names', function () {
     return view('inventory.product-names');
@@ -108,6 +117,19 @@ Route::group(['middleware' => ['auth', 'role:admin|user']], function(){
     Route::post('/supplier/store', [SupplierController::class, 'store'])->name('supplier.store');
     Route::delete('/supplier/delete/{id}', [SupplierController::class, 'deleteSupplier'])->name('supplier.delete');
     Route::post('/supplier/update/{id}', [SupplierController::class, 'updateSupplier'])->name('supplier.update');
+
+    // Department LIST
+    Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');
+    Route::post('/departments', [DepartmentController::class, 'store'])->name('departments.store');
+    Route::put('/departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');
+    Route::delete('/departments/{department}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
+
+    // PRODUCT NAMES LIST
+    Route::get('product-names', [ProductController::class, 'getProductNames'])->name('product-names.index');
+    Route::post('product-names', [ProductController::class, 'storeProductName'])->name('product-names.store');
+    Route::put('product-names/{id}', [ProductController::class, 'updateProductName'])->name('product-names.update');
+    Route::delete('product-names/{id}', [ProductController::class, 'deleteProductName'])->name('product-names.destroy');
+
 
     // Route::get('/admin/index', [AdminController::class, 'index'])->name('admin.index');
     // Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store');

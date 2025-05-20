@@ -42,6 +42,11 @@
         cursor: pointer;
     }
 
+    .nav-dropdown {
+        list-style: none;
+        padding-left: 20px;
+    }
+
     /* Responsive layout */
     .content-wrapper {
         margin-left: 250px;
@@ -78,7 +83,13 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#"><i class="bi bi-tags"></i> <span>Organization & Label</span></a>
+                <a class="nav-link" href="#" id="organization-toggle">
+                    <i class="bi bi-tags"></i> <span>Organization & Label</span>
+                </a>
+                <ul class="nav-dropdown" id="organization-dropdown" style="display: none;">
+                    <li><a class="nav-link" href="{{ route('inventory.department') }}">Manage Department</a></li>
+                    <li><a class="nav-link" href="{{ route('inventory.product-names') }}">Manage Product Type</a></li>
+                </ul>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#" id="settings-toggle">
@@ -101,10 +112,17 @@
         document.getElementById('main-content').classList.toggle('content-wrapper');
     }
 
-    // Optional: toggle settings dropdown
+    // Toggle Settings dropdown
     document.getElementById('settings-toggle').addEventListener('click', function (e) {
         e.preventDefault();
         const dropdown = document.getElementById('settings-dropdown');
+        dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+    });
+
+    // Toggle Organization & Label dropdown
+    document.getElementById('organization-toggle').addEventListener('click', function (e) {
+        e.preventDefault();
+        const dropdown = document.getElementById('organization-dropdown');
         dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
     });
 </script>

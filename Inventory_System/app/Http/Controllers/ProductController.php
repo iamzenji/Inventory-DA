@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Product;
+use App\Models\ProductName;   // <-- Import ProductName model
 use Illuminate\Http\Request;
-use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
+
 class ProductController extends Controller
 {
     public function index()
@@ -14,7 +16,7 @@ class ProductController extends Controller
 
     public function getData(Request $request)
     {
-    $products = Product::query()->get();
+        $products = Product::query()->get();
 
         return DataTables::of($products)
             ->make(true);
@@ -35,7 +37,7 @@ class ProductController extends Controller
             'end_user' => 'required',
         ]);
 
-        Product::create($request->all());  // Create a new product using the data from the form
+        Product::create($request->all());
 
         return response()->json(['success' => 'Product added successfully!']);
     }
@@ -49,12 +51,64 @@ class ProductController extends Controller
 
         return response()->json(['success' => 'Product updated successfully!']);
     }
+
+    // Delete product
     public function deleteProduct($id)
     {
         $product = Product::findOrFail($id);
         $product->delete();
 
-        return response()->json(['success' => 'User deleted successfully']);
+        return response()->json(['success' => 'Product deleted successfully']);
     }
 
+    // --------------- ProductName Methods --------------- //
+
+    // Show ProductName list view (optional if you want separate page)
+    public function productNamesIndex()
+    {
+        // Return a view if you have one for product names
+        return view('inventory.product-names');
+    }
+
+    // Get ProductName data for DataTables
+    public function getProductNames()
+    {
+        $productNames = ProductName::all();
+
+        return response()->json($productNames);
+    }
+
+    // Store a new ProductName
+    public function storeProductName(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|unique:product_names,name',
+        ]);
+
+        ProductName::create($request->only('name'));
+
+        return response()->json(['success' => 'Product name added successfully!']);
+    }
+
+    // Update a ProductName
+    public function updateProductName(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|unique:product_names,name,' . $id,
+        ]);
+
+        $productName = ProductName::findOrFail($id);
+        $productName->update($request->only('name'));
+
+        return response()->json(['success' => 'Product name updated successfully!']);
+    }
+
+    // Delete a ProductName
+    public function deleteProductName($id)
+    {
+        $productName = ProductName::findOrFail($id);
+        $productName->delete();
+
+        return response()->json(['success' => 'Product name deleted successfully']);
+    }
 }
